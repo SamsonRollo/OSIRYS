@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import aop.game.AOP;
 import gen.GameButton;
 import gen.ImageLoader;
+import gen.Score;
 
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
@@ -19,6 +20,7 @@ public class Osirys extends JPanel implements ActionListener{
     private MainClass mainClass;
     private BufferedImage BG_IMG, DESC_IMG;
     private String srcPath = "src/";
+    private Score score;
 
     public Osirys(MainClass mainClass){
         this.mainClass = mainClass;
@@ -130,9 +132,7 @@ public class Osirys extends JPanel implements ActionListener{
         super.paintComponent(g);
 
         g.drawImage(BG_IMG,0,0,null);
-
-        //if(DESC_IMG!=null)
-            g.drawImage(DESC_IMG, getWidth()/2-227, 285, null);
+        g.drawImage(DESC_IMG, getWidth()/2-227, 285, null);
     }
 
     @Override
@@ -141,7 +141,7 @@ public class Osirys extends JPanel implements ActionListener{
         if(command.equals("AYAOGBTN")){
 
         }else if(command.equals("AOPBTN")){
-            AOP aop = new AOP(getMainClass());
+            AOP aop = new AOP(getMainClass(), score);
         }else if(command.equals("COCBTN")){
 
         }else if(command.equals("SETTINGBTN")){

@@ -42,8 +42,9 @@ public class AOP extends JPanel{
     private Font font;
     private PowerUp powUp = null;
 
-    public AOP(MainClass mainClass){ //Score score
+    public AOP(MainClass mainClass, Score score){
         this.mainClass = mainClass;
+        this.score = score;
         setPreferredSize(new Dimension(700,500));
         setLayout(null);
         setBounds(0,0,700,500);
@@ -60,7 +61,6 @@ public class AOP extends JPanel{
         INIT_IMG = null;
 
         font = new Font("sans_serif", Font.BOLD, 18);
-        score = new Score();
         upgrade = new Upgrade(1, 5, 1000, 1);
         procBody = new SpriteSheet("aop/src/pbodysprite.png", 55, 44);
         procTail = new SpriteSheet("aop/src/ptailsprite.png", 55, 44);
@@ -401,8 +401,8 @@ public class AOP extends JPanel{
             p.removeBullet();
         }
         removeProcessor();
-        
-        score = new Score();
+        score.incrementTotalScore(score.getGameScore());
+        score.resetCurrentGameScore();
         upgrade = new Upgrade(1, 5, 1000, 1);
         processes = new ArrayList<Process>();
         processors = new ArrayList<Processor>();

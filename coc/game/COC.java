@@ -40,8 +40,9 @@ public class COC extends JPanel{
     public Middler middler = null;
     public PausePanel pausePanel;
 
-    public COC(MainClass mainClass){
+    public COC(MainClass mainClass, Score score){
         this.mainClass = mainClass;
+        this.score = score;
         setPreferredSize(new Dimension(700,500));
         setLayout(null);
         setBounds(0,0,700,500);
@@ -55,7 +56,6 @@ public class COC extends JPanel{
         TOT_SC_IMG = il.getBuffImage();
 
         font = new Font("sans_serif", Font.BOLD, 21);
-        score = new Score();
         middler = new Middler(getCOC());
         pausePanel = new PausePanel(getCOC());
 
