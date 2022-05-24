@@ -21,12 +21,19 @@ public class GameButton extends JButton{
 
     public void setIcons(String selectAddress, String unselectAddress, String alt){
         ImageLoader imgLoader = new ImageLoader(selectAddress, alt);
-        setIcon(new ImageIcon(imgLoader.getBuffImage()));
-        imgLoader.reloadImage(unselectAddress, alt);
-        setRolloverIcon(new ImageIcon(imgLoader.getBuffImage()));
+        ImageIcon icon;
+        try{
+            icon = new ImageIcon(imgLoader.getBuffImage());
+            setIcon(icon);
+        }catch(Exception e){setText(alt);}
 
-        if(imgLoader.isNull())
-            setText(alt);
+        imgLoader.reloadImage(unselectAddress, alt);
+        try{
+            icon = new ImageIcon(imgLoader.getBuffImage());
+            setRolloverIcon(icon);
+        }catch(Exception e){};
+
+        setActionCommand(alt);
     }
 
     public JButton getButton(){

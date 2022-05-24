@@ -1,6 +1,5 @@
 package gen;
 
-import java.io.IOException;
 import java.awt.image.BufferedImage;
 import javax.imageio.ImageIO;
 
@@ -18,7 +17,7 @@ public class ImageLoader {
         try{
             img = ImageIO.read(this.getClass().getClassLoader().getResource(path));
             return true;
-        }catch(IOException ioe){
+        }catch(Exception ioe){
             img = null;
             this.alt = alt;
             return false; 

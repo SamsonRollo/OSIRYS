@@ -14,7 +14,7 @@ public class MainClass extends JFrame{
     public MainClass(){
     	//setTrayIcon();
         getContentPane().setMinimumSize(new Dimension(SUGGESTED_W, SUGGESTED_H));
-        getContentPane().setPreferredSize(new Dimension(SUGGESTED_W, SUGGESTES_H));
+        getContentPane().setPreferredSize(new Dimension(SUGGESTED_W, SUGGESTED_H));
         setResizable(false);
 		getContentPane().setLayout(null);
         setDefaultCloseOperation(EXIT_ON_CLOSE);
@@ -25,7 +25,8 @@ public class MainClass extends JFrame{
 
     public void loadPanels(){
         // AOP aop = new AOP(this);
-        // getContentPane().add(aop);
+        Osirys osirys = new Osirys(this);
+        getContentPane().add(osirys);
     }
 
     // private void setTrayIcon(){
