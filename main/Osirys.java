@@ -3,6 +3,8 @@ package main;
 import javax.swing.JPanel;
 
 import aop.game.AOP;
+import ayaog.game.AYAOG;
+import coc.game.COC;
 import gen.GameButton;
 import gen.ImageLoader;
 import gen.Score;
@@ -19,7 +21,7 @@ import java.awt.event.MouseEvent;
 public class Osirys extends JPanel implements ActionListener{
     private MainClass mainClass;
     private BufferedImage BG_IMG, DESC_IMG;
-    private String srcPath = "src/";
+    private String srcPath = "src/img/";
     private Score score;
 
     public Osirys(MainClass mainClass){
@@ -28,10 +30,11 @@ public class Osirys extends JPanel implements ActionListener{
         setLayout(null);
         setBounds(0,0,mainClass.suggestedW(), mainClass.suggestedH());
         loadElements();
+        score = new Score();
     }
 
     public void loadElements(){
-        ImageLoader il = new ImageLoader("src/panel.png", "bg");
+        ImageLoader il = new ImageLoader("src/img/panel.png", "bg");
         BG_IMG = il.getBuffImage();
         DESC_IMG = null;
 
@@ -104,12 +107,24 @@ public class Osirys extends JPanel implements ActionListener{
         add(cocBtn);
     }
 
-    private void autoSetButtonIcons(GameButton button, String name){
-        button.setIcons(
-            srcPath+"normal/"+name+".png",
-            srcPath+"hilite/h_"+name+".png",
-            name.toUpperCase()
-        );
+    public void createGameThread(OsirysGame game){
+        Thread gameLoadThread = new Thread(new Runnable() {
+            @Override
+            public void run(){
+                getMainClass().getGame().loadGame();
+                try {
+                    Thread.sleep(400);
+                } catch (Exception e) {}
+
+                getMainClass().showScreen(Screen.GAME.name());
+            }
+        });
+        gameLoadThread.start();
+        initLoading();
+    }
+
+    private void initLoading(){
+        getMainClass().showScreen(Screen.LOADING.name());
     }
 
     public void addDESC(String game){
@@ -123,8 +138,20 @@ public class Osirys extends JPanel implements ActionListener{
         repaint();
     }
 
+    public Osirys getOsirys(){
+        return this;
+    }
+
     public MainClass getMainClass(){
         return this.mainClass;
+    }
+
+    private void autoSetButtonIcons(GameButton button, String name){
+        button.setIcons(
+            srcPath+"normal/"+name+".png",
+            srcPath+"hilite/h_"+name+".png",
+            name.toUpperCase()
+        );
     }
 
     @Override
@@ -138,20 +165,28 @@ public class Osirys extends JPanel implements ActionListener{
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
-        if(command.equals("AYAOGBTN")){
+        if(command.equalsIgnoreCase("AYAOGBTN")){ //Are You An OS Geek?
+            OsirysGame ayaog = new AYAOG(getMainClass(), score);
+            getMainClass().setGame(ayaog);
+            createGameThread(ayaog);
+        }else if(command.equalsIgnoreCase("AOPBTN")){ //Attack on Process
+            OsirysGame aop = new AOP(getMainClass(), score);
+            getMainClass().setGame(aop);
+            createGameThread(aop);
+        }else if(command.equalsIgnoreCase("COCBTN")){ //Crush 'em or Crash me
+            OsirysGame coc = new COC(getMainClass(), score);
+            getMainClass().setGame(coc);
+            createGameThread(coc);
+        }else if(command.equalsIgnoreCase("SETTINGBTN")){
 
-        }else if(command.equals("AOPBTN")){
-            AOP aop = new AOP(getMainClass(), score);
-        }else if(command.equals("COCBTN")){
-
-        }else if(command.equals("SETTINGBTN")){
-
-        }else if(command.equals("ABOUTBTN")){
+        }else if(command.equalsIgnoreCase("ABOUTBTN")){
             
-        }else if(command.equals("RANKBTN")){
-            
-        }else if(command.equals("EXITBTN")){
-            
+        }else if(command.equalsIgnoreCase("RANKBTN")){
+            //show rank retrieve from src
+        }else if(command.equalsIgnoreCase("EXITBTN")){
+            //ask if sure
+            //record score
+            System.exit(1);
         }
     }
 }

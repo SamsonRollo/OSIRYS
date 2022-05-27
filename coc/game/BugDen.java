@@ -58,8 +58,8 @@ public class BugDen implements Runnable{
     public void createBugs(int layer){
         int bugPerRow = 15;
         for(int j=0, mulY = 48; j<layer; j++){
-            int mulX = (int)Math.floor((520 - bugPerRow*33)/bugPerRow)+33; //11 maust be randomize later
-            int shift = colorIdx%2==0 ? 20 : -20; //if shift left or right to shoft row 
+            int mulX = (int)Math.floor((520 - bugPerRow*33)/bugPerRow)+33;
+            int shift = colorIdx%2==0 ? 20 : -20;
             for(int i=0; i<bugPerRow; i++){
                 Bug b = new Bug(coc, coc.getLeftBound()+20+mulX*i+shift, 85+mulY*j, (colorIdx%4)+1, shift);
                 bugs.add(b);

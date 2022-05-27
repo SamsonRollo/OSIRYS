@@ -1,9 +1,11 @@
 package coc.game;
 
-public class LevelUpPanel extends MenuPanel implements Runnable{
+import gen.GameMenuPanel;
+
+public class LevelUpPanel extends GameMenuPanel implements Runnable{
     
     public LevelUpPanel(COC coc){
-        this.coc = coc;
+        this.game = coc;
         this.path = "coc/src/gamelevelup.png";
         loadElements("over");
 
@@ -19,13 +21,13 @@ public class LevelUpPanel extends MenuPanel implements Runnable{
 
     @Override
     public void run() {
-        coc.add(this);
-        coc.setComponentZOrder(getPanel(), 0);
+        game.add(this);
+        game.setComponentZOrder(getPanel(), 0);
         try{
             Thread.sleep(2000);
         }catch(Exception e){}
         
-        coc.remove(this);
+        game.remove(this);
     }
 
     public void runLevelUp(){

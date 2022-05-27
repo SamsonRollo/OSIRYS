@@ -1,9 +1,11 @@
 package coc.game;
 
-public class PausePanel extends MenuPanel {
+import gen.GameMenuPanel;
+
+public class PausePanel extends GameMenuPanel {
     
     public PausePanel(COC coc){
-        this.coc = coc;
+        this.game = coc;
         this.path = "coc/src/gamepause.png";
         loadElements("pause");
     }

@@ -5,6 +5,7 @@ import javax.swing.JPanel;
 import javax.swing.JScrollPane;
 
 import gen.GameButton;
+import gen.GameMenuPanel;
 import gen.ImageLoader;
 
 import java.awt.Dimension;
@@ -13,41 +14,28 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class HelpPanel extends JPanel {
-    private BufferedImage BG_IMG, CONTENT_IMG;
-    private AOP aop;
-    private boolean isPlay;
+public class HelpPanel extends GameMenuPanel {
+    private BufferedImage CONTENT_IMG;
 
     public HelpPanel(AOP aop, boolean isPlay){
-        this.aop = aop;
-        this.isPlay = isPlay;
-        loadElements();
-    }
-
-    public void loadElements(){
-        setLayout(null);
+        this.game = aop;
+        this.path = "aop/src/helpPanelOuter.png";
+        loadElements("bgHelp");
         setBounds(0,0,700,500);
-        setOpaque(false);
-        ImageLoader il = new ImageLoader("aop/src/helpPanelOuter.png", "bgHelp");
-        BG_IMG = il.getBuffImage();
-        il.reloadImage("aop/src/helpContent.png", "content");
+
+        ImageLoader il = new ImageLoader("aop/src/helpContent.png", "content");
         CONTENT_IMG = il.getBuffImage();
 
         GameButton back = new GameButton(308, 413, 84, 28);
 
-        back.setIcons(
-            "aop/src/normal/back.png",
-            "aop/src/hilite/h_back.png",
-            "BACK"
-        );
+        autoSetIcons(back, "back");
 
         back.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                aop.setVisible(true);   
-                aop.getMainClass().getContentPane().remove(getPanel());
-                aop.getMainClass().revalidate();
+                aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.updateUI();    
             }
         });
 
@@ -63,18 +51,8 @@ public class HelpPanel extends JPanel {
         JScrollPane jsp = new JScrollPane(contentPanel);
         jsp.setBounds(131, 25, 439, 375);
         jsp.setBorder(BorderFactory.createEmptyBorder());
+        
         add(jsp);
         add(back);
-    }
-
-    public JPanel getPanel(){
-        return this;
-    }
-
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        g.drawImage(BG_IMG,0,0, null);
     }
 }

@@ -31,7 +31,9 @@ public class GameButton extends JButton{
         try{
             icon = new ImageIcon(imgLoader.getBuffImage());
             setRolloverIcon(icon);
-        }catch(Exception e){};
+        }catch(Exception e){
+            setRolloverIcon(null);
+        };
 
         setActionCommand(alt);
     }

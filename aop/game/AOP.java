@@ -3,7 +3,6 @@ package aop.game;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
-import java.awt.Dimension;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -11,24 +10,23 @@ import java.awt.image.BufferedImage;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
-import javax.swing.JPanel;
 
 import aop.exception.ErrorReport;
 import gen.GameButton;
+import gen.GameMenuPanel;
 import gen.ImageLoader;
 import gen.Score;
 import gen.SpriteSheet;
 
 import main.MainClass;
+import main.OsirysGame;
 
-public class AOP extends JPanel{
+public class AOP extends OsirysGame{
     private Upgrade upgrade;
-    private Score score;
     private final int MENU_LOC_X = 16;
     private final int MENU_LOC_Y = 85;
     private final int MENU_LOC_MUL = 32;
-    private MainClass mainClass;
-    private BufferedImage BG_IMG, ANGER_IMG, CURR_ANGER, INIT_IMG;
+    private BufferedImage ANGER_IMG, CURR_ANGER, INIT_IMG;
     private ArrayList<Process> processes;
     private ArrayList<Processor> processors;
     private Rectangle[] dropPoints;
@@ -45,16 +43,17 @@ public class AOP extends JPanel{
     public AOP(MainClass mainClass, Score score){
         this.mainClass = mainClass;
         this.score = score;
-        setPreferredSize(new Dimension(700,500));
-        setLayout(null);
-        setBounds(0,0,700,500);
+        setCode("aop");
+        setProperties();
+    }
+
+    public void loadGame(){
         loadElements();
     }
 
     public void loadElements(){
-        ImageLoader il = new ImageLoader("aop/src/panel.png", "bg");
-        BG_IMG = il.getBuffImage();
-        il.reloadImage("aop/src/anger.png", "anger");
+        loadBackground();
+        ImageLoader il = new ImageLoader("aop/src/anger.png", "anger");
         ANGER_IMG = il.getBuffImage();
         il = null;
 
@@ -103,8 +102,7 @@ public class AOP extends JPanel{
             public void actionPerformed(ActionEvent e){
                 playingStatus(false);
                 PausePanel ppanel = new PausePanel(getAOP());
-                getAOP().setVisible(false);
-                mainClass.add(ppanel);
+                addFloater(ppanel);
             }
         });
 
@@ -113,8 +111,7 @@ public class AOP extends JPanel{
                 boolean playBol = isPlay();
                 setPlay(false);
                 UpgradePanel ugPanel = new UpgradePanel(getAOP(), upgrade, font, playBol);
-                getAOP().setVisible(false);
-                mainClass.add(ugPanel);
+                addFloater(ugPanel);
             }
         });
 
@@ -123,8 +120,7 @@ public class AOP extends JPanel{
                 boolean playBol = isPlay();
                 setPlay(false);
                 HelpPanel hePanel = new HelpPanel(getAOP(), playBol);
-                getAOP().setVisible(false);
-                mainClass.add(hePanel);
+                addFloater(hePanel);
             }
         });
 
@@ -133,8 +129,7 @@ public class AOP extends JPanel{
                 boolean playBol = isPlay();
                 setPlay(false);
                 QuitPanel qPanel = new QuitPanel(getAOP(), playBol);
-                getAOP().setVisible(false);
-                mainClass.add(qPanel);
+                addFloater(qPanel);
             }
         });
 
@@ -376,20 +371,14 @@ public class AOP extends JPanel{
         return this;
     }
 
-    public MainClass getMainClass(){
-        return this.mainClass;
-    }
-
     public void reportError(String message, String title){
         new ErrorReport(mainClass, message, title);
     }
 
-    private void autoSetIcons(GameButton button, String name){
-        button.setIcons(
-            "aop/src/normal/"+name+".png",
-            "aop/src/hilite/h_"+name+".png",
-            name.toUpperCase()
-        );
+    public void addFloater(GameMenuPanel panel){
+        getAOP().add(panel);
+        getAOP().setComponentZOrder(panel, 0);
+        getAOP().updateUI();
     }
 
     public void resetGame(){

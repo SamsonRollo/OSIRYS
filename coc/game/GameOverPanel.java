@@ -6,12 +6,13 @@ import java.awt.Graphics;
 import java.awt.Font;
 
 import gen.GameButton;
+import gen.GameMenuPanel;
 
-public class GameOverPanel extends MenuPanel {
+public class GameOverPanel extends GameMenuPanel {
     private Font font;
 
     public GameOverPanel(COC coc){
-        this.coc = coc;
+        this.game = coc;
         this.font = new Font("sans_serif", Font.BOLD, 25);;
         this.path = "coc/src/gameover.png";
         loadElements("over");
@@ -37,7 +38,7 @@ public class GameOverPanel extends MenuPanel {
         g.drawImage(BG, 0, 0, null);
         g.setColor(java.awt.Color.white);
         g.setFont(font);
-        String score = String.valueOf(coc.getScore().getGameScore());
+        String score = String.valueOf(game.getScore().getGameScore());
         int scoreW = g.getFontMetrics().stringWidth(score);
         g.drawString(score, 
             (int)Math.floor(Double.valueOf(getWidth())/2-Double.valueOf(scoreW)/2),

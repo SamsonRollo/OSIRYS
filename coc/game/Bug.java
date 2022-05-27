@@ -4,7 +4,7 @@ import java.util.Random;
 
 public class Bug extends GameObject {
     private COC coc;
-    private int shift; //positive right shift, negative left shift
+    private int shift;
     private int shiftCount = 0;
 
     public Bug(COC coc, int x, int y, int colorNum, int shift){
@@ -20,7 +20,7 @@ public class Bug extends GameObject {
 
     public void update(Level level){
         int deltaX = getX();
-        if(shift!=0 && shift==shiftCount) //reverses shift to revers x shift
+        if(shift!=0 && shift==shiftCount)
             shift = -shift;
 
         if(shift<0 && shift<shiftCount){

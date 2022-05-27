@@ -1,8 +1,7 @@
 package aop.game;
 
-import javax.swing.JPanel;
-
 import gen.GameButton;
+import gen.GameMenuPanel;
 import gen.ImageLoader;
 
 import java.awt.image.BufferedImage;
@@ -12,28 +11,28 @@ import java.awt.Color;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class UpgradePanel extends JPanel {
+public class UpgradePanel extends GameMenuPanel {
     private Upgrade upgrade;
-    private BufferedImage IMAGE, coreImage, bulletImage;
+    private BufferedImage coreImage, bulletImage;
     private Font font;
     private AOP aop;
     private boolean isPlay;
 
     public UpgradePanel(AOP aop, Upgrade upgrade, Font font, boolean isPlay){
         this.aop = aop;
+        this.game = aop;
         this.upgrade = upgrade;
         this.font = font;
         this.isPlay = isPlay;
-        loadElements();
+        this.path = "aop/src/upgradePanel.png";
+        loadElements("upgrade");
+        setBounds(0,0,700,500);
+
+        loadAdditionalElements();
     }
 
-    public void loadElements(){
-        setLayout(null);
-        setBounds(0,0,700,500);
-        setOpaque(false);
-        ImageLoader il = new ImageLoader("aop/src/upgradePanel.png", "upgradePanel");
-        IMAGE = il.getBuffImage();
-        il.reloadImage("aop/src/cpu.png", "cpu");
+    public void loadAdditionalElements(){
+        ImageLoader il = new ImageLoader("aop/src/cpu.png", "cpu");
         coreImage = il.getBuffImage();
         il.reloadImage("aop/src/bullet"+upgrade.getBulletLevel()+".png", "bullet");
         bulletImage = il.getBuffImage();
@@ -79,11 +78,10 @@ public class UpgradePanel extends JPanel {
 
         back.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                aop.setVisible(true);   
-                aop.getMainClass().getContentPane().remove(getPanel());
-                aop.getMainClass().revalidate();
+                aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.updateUI();
             }
         });
 
@@ -98,23 +96,11 @@ public class UpgradePanel extends JPanel {
         repaint();
     }
 
-    public JPanel getPanel(){
-        return this;
-    }
-
-    private void autoSetIcons(GameButton button, String name){
-        button.setIcons(
-            "aop/src/normal/"+name+".png",
-            "aop/src/hilite/h_"+name+".png",
-            name.toUpperCase()
-        );
-    }
-
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        g.drawImage(IMAGE,0,0, null);
+        g.drawImage(BG,0,0, null);
         g.setFont(font);
         g.setColor(Color.white);
         g.drawString(String.valueOf(upgrade.getToken()), 265, 127);

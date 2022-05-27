@@ -1,9 +1,11 @@
 package coc.game;
 
-public class Middler extends MenuPanel {
+import gen.GameMenuPanel;
+
+public class Middler extends GameMenuPanel {
     
     public Middler(COC coc){
-        this.coc = coc;
+        this.game = coc;
         this.path = "coc/src/middler.png";
         loadElements("middler");
     }

@@ -4,32 +4,29 @@ import javax.swing.AbstractAction;
 import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
-import javax.swing.JPanel;
 import javax.swing.KeyStroke;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
-import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Font;
 
 import gen.GameButton;
 import gen.ImageLoader;
 import gen.Score;
+import gen.GameMenuPanel;
 import main.MainClass;
+import main.OsirysGame;
 
-public class COC extends JPanel{
-    private MainClass mainClass;
+public class COC extends OsirysGame{
     public final String LEFT = "LEFT";
     public final String RIGHT = "RIGHT"; 
     public final String ENTER = "ENTER";
     private int LEFT_BOUND = 70;
-    private int RIGHT_BOUND = 590;//inclusive of width
-    private BufferedImage BG_IMG;
+    private int RIGHT_BOUND = 590;
     private BufferedImage TOT_SC_IMG, CUR_SC_IMG=null;
-    private Score score;
     private Level level;
     private Font font;
     private Ship ship;
@@ -43,16 +40,17 @@ public class COC extends JPanel{
     public COC(MainClass mainClass, Score score){
         this.mainClass = mainClass;
         this.score = score;
-        setPreferredSize(new Dimension(700,500));
-        setLayout(null);
-        setBounds(0,0,700,500);
+        setCode("coc");
+        setProperties();
+    }
+
+    protected void loadGame(){
         loadElements();
     }
 
     public void loadElements(){
-        ImageLoader il =  new ImageLoader("coc/src/panel.png", "panel");
-        BG_IMG = il.getBuffImage();
-        il.reloadImage("coc/src/progressbar.png", "progress");
+        loadBackground();
+        ImageLoader il = new ImageLoader("coc/src/progressbar.png", "progress");
         TOT_SC_IMG = il.getBuffImage();
 
         font = new Font("sans_serif", Font.BOLD, 21);
@@ -111,7 +109,7 @@ public class COC extends JPanel{
         if(newGame){
             level = new Level();
             ship = new Ship(getCOC(), score, 330, 450);
-            den = new BugDen(getCOC(), level, 4); //change later based on level
+            den = new BugDen(getCOC(), level, 4);
             getCOC().add(ship);
             updateScoreIMG();
             updateUI();
@@ -175,7 +173,7 @@ public class COC extends JPanel{
         getCOC().updateUI();
     }
 
-    public void addFloater(MenuPanel panel){
+    public void addFloater(GameMenuPanel panel){
         getCOC().add(panel);
         getCOC().setComponentZOrder(panel, 0);
         getCOC().updateUI();
@@ -194,6 +192,7 @@ public class COC extends JPanel{
         den.killAllBugs();
         score.incrementTotalScore(score.getGameScore());
         score.resetCurrentGameScore();
+        score.resetCurrentLevelScore();
         updateScoreIMG();
         playBut.setName("play");
         autoSetIcons(playBut, "play");
@@ -344,18 +343,6 @@ public class COC extends JPanel{
 
     public Score getScore(){
         return this.score;
-    }
-
-    public MainClass getMainClass(){
-        return this.mainClass;
-    }
-    
-    private void autoSetIcons(GameButton button, String name){
-        button.setIcons(
-            "coc/src/normal/"+name+".png",
-            "coc/src/hilite/h_"+name+".png",
-            name.toUpperCase()
-        );
     }
 
     @Override

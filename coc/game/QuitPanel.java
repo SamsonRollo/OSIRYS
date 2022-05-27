@@ -4,11 +4,13 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
 import gen.GameButton;
+import gen.GameMenuPanel;
+import main.Screen;
 
-public class QuitPanel extends MenuPanel {
+public class QuitPanel extends GameMenuPanel {
     
     public QuitPanel(COC coc, boolean curPlay){
-        this.coc = coc;
+        this.game = coc;
         this.path = "coc/src/gamequit.png";
         loadElements("quit");
 
@@ -20,7 +22,8 @@ public class QuitPanel extends MenuPanel {
         
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.exit(1); //change to back to main menu
+                coc.getScore().setTotalScore(coc.getScore().getGameScore());
+                coc.getMainClass().showScreen(Screen.MENU.name());
             }
         });
 

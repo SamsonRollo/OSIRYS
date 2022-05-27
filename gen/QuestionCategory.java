@@ -1,0 +1,9 @@
+package gen;
+
+public enum QuestionCategory {
+    OVERVIEW,
+    PROCESS_MANAGEMENT,
+    MEMORY_MANAGEMENT,
+    STORAGE_MANAGEMENT,
+    SECURITY_AND_PROTECTION
+}

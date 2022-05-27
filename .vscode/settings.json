@@ -1,0 +1,15 @@
+{
+    "java.project.referencedLibraries": [
+        "lib/**/*.jar",
+        "bin\\commons-collections4-4.1.jar",
+        "bin\\poi-3.17.jar",
+        "bin\\poi-ooxml-3.17.jar",
+        "bin\\poi-ooxml-schemas-3.17.jar",
+        "bin\\xmlbeans-2.6.0.jar",
+        "bin/commons-collections4-4.1.jar",
+        "bin/poi-3.17.jar",
+        "bin/poi-ooxml-3.17.jar",
+        "bin/poi-ooxml-schemas-3.17.jar",
+        "bin/xmlbeans-2.6.0.jar"
+    ]
+}

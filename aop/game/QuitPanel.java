@@ -1,75 +1,43 @@
 package aop.game;
 
-import javax.swing.JPanel;
-
 import gen.GameButton;
-import gen.ImageLoader;
-import java.awt.image.BufferedImage;
-import java.awt.Graphics;
+import gen.GameMenuPanel;
+import main.Screen;
+
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 
-public class QuitPanel extends JPanel {
-    private BufferedImage BG_IMG;
-    private AOP aop;
-    private boolean isPlay;
+public class QuitPanel extends GameMenuPanel {
 
     public QuitPanel(AOP aop, boolean isPlay){
-        this.aop = aop;
-        this.isPlay = isPlay;
-        loadElements();
-    }
-
-    public void loadElements(){
-        setLayout(null);
+        this.game = aop;
+        this.path = "aop/src/quitPanel.png";
+        loadElements("quit");
         setBounds(0,0,700,500);
-        setOpaque(false);
-        ImageLoader il = new ImageLoader("aop/src/quitPanel.png", "quit");
-        BG_IMG = il.getBuffImage();
 
         GameButton no = new GameButton(366, 305, 84, 28);
         GameButton yes = new GameButton(240, 305, 84, 28);
 
-        no.setIcons(
-            "aop/src/normal/no.png",
-            "aop/src/hilite/h_no.png",
-            "NO"
-        );
-
-        yes.setIcons(
-            "aop/src/normal/yes.png",
-            "aop/src/hilite/h_yes.png",
-            "YES"
-        );
+        autoSetIcons(no, "no");
+        autoSetIcons(yes, "yes");
 
         no.addActionListener(new ActionListener(){
-            public void actionPerformed(ActionEvent e){
-                aop.setVisible(true);   
-                aop.getMainClass().getContentPane().remove(getPanel());
-                aop.getMainClass().revalidate();
+            public void actionPerformed(ActionEvent e){ 
+                aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.updateUI();
             }
         });
 
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                System.exit(1);
+                aop.getScore().setTotalScore(aop.getScore().getGameScore());
+                aop.getMainClass().showScreen(Screen.MENU.name());
             }
         });
 
         add(no);
         add(yes);
-    }
-
-    public JPanel getPanel(){
-        return this;
-    }
-
-    @Override
-    public void paintComponent(Graphics g){
-        super.paintComponent(g);
-
-        g.drawImage(BG_IMG,0,0, null);
     }
 }

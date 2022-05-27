@@ -10,11 +10,12 @@ import java.awt.Dimension;
 import java.awt.Graphics;
 
 import gen.GameButton;
+import gen.GameMenuPanel;
 
-public class HelpPanel extends MenuPanel {
+public class HelpPanel extends GameMenuPanel {
 
     public HelpPanel(COC coc, boolean curPlay){
-        this.coc = coc;
+        this.game = coc;
         this.path = "coc/src/helpContent.png";
         loadElements("content");
         setBounds(getX(), 85, 397, 400);
