@@ -3,7 +3,9 @@ package gen;
 import java.util.ArrayList;
 import java.io.File;
 import java.io.FileInputStream;
+import java.io.UnsupportedEncodingException;
 import java.net.URL;
+import java.net.URLDecoder;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -13,16 +15,28 @@ import org.apache.poi.xssf.usermodel.XSSFSheet;
 import org.apache.poi.xssf.usermodel.XSSFWorkbook; 
 
 public class ExcelLoader{
-    private String path;
+    private String fileName;
     private ArrayList<Question> questions;
 
-    public ExcelLoader(String path){
-        this.path = path;
+    public ExcelLoader(String fileName){
+        this.fileName = fileName;
         this.questions = new ArrayList<Question>();
     }
 
     public void loadExcel(){
-        URL url = this.getClass().getClassLoader().getResource(path);
+        URL url = this.getClass().getClassLoader().getResource(fileName);
+        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
+        String decodePath = (new File(path)).getParentFile().getPath();
+        String xlsxFile = decodePath+"/imports/questions.xlsx";
+
+
+        // try {
+        //     decodePath = URLDecoder.decode(path, "UTF-8");
+        // } catch (UnsupportedEncodingException e1) {
+        //     // TODO Auto-generated catch block
+        //     e1.printStackTrace();
+        // }
+        System.out.println(" pAHJT "+new File(xlsxFile).exists());
 
         try {
             FileInputStream fis = new FileInputStream(new File(url.toURI()));

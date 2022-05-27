@@ -10,7 +10,7 @@ import gen.ImageLoader;
 import gen.Score;
 
 public abstract class OsirysGame extends JPanel{
-    private final String excelPath = "src/file/questions.xlsx";
+    private String excelPath = "src/file/questions.xlsx";
     protected String code;
     protected Score score;
     protected MainClass mainClass;

@@ -14,9 +14,9 @@ public class CertificatePanel extends GameMenuPanel{
         this.path = "ayaog/src/anti_certificate.png";
         if(win)
             this.path = "ayaog/src/certificate.png";
-        // if(command.equalsIgnoreCase("save"))
-        //  this.path = ayaog/src/savegame.png;
+
         this.srcPath = "ayaog/";
+
         loadElements("select");
         setBounds(
             ayaog.getWidth()/2-BG.getWidth()/2,
@@ -27,11 +27,11 @@ public class CertificatePanel extends GameMenuPanel{
 
         GameButton okBtn = new GameButton(getWidth()/2-45, getHeight()-45, 90, 28);
 
-        autoSetIcons(okBtn, "save");
+        autoSetIcons(okBtn, "ok");
 
         okBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                if(command.equals("drop") || command.equals("save")){  
+                if(command.equals("drop")){
                     ayaog.getMainClass().showScreen(Screen.MENU.name());
                 }
 
@@ -45,5 +45,4 @@ public class CertificatePanel extends GameMenuPanel{
 
         add(okBtn);
     }
-    
 }

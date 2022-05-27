@@ -7,6 +7,7 @@ import ayaog.game.AYAOG;
 import coc.game.COC;
 import gen.GameButton;
 import gen.ImageLoader;
+import gen.InternalStateSave;
 import gen.MenuPanel;
 import gen.Score;
 
@@ -25,6 +26,7 @@ public class Osirys extends JPanel implements ActionListener{
     private BufferedImage BG_IMG, DESC_IMG;
     private String srcPath = "src/img/";
     private Score score;
+    private InternalStateSave iss;
     private boolean soundOn = true;
     private boolean onFloater = false;
 
@@ -35,6 +37,7 @@ public class Osirys extends JPanel implements ActionListener{
         setBounds(0,0,mainClass.suggestedW(), mainClass.suggestedH());
         loadElements();
         score = new Score();
+        iss = new InternalStateSave();
     }
 
     public void loadElements(){
@@ -42,12 +45,11 @@ public class Osirys extends JPanel implements ActionListener{
         BG_IMG = il.getBuffImage();
         DESC_IMG = null;
 
-        int butX = getWidth()-130, mulX = 31, y=10, w=28, h=28;
+        int butX = getWidth()-102, mulX = 31, y=10, w=28, h=28;
 
         GameButton settingBtn = new GameButton(butX, y, w, h);
         GameButton aboutBtn = new GameButton(butX+mulX, y, w, h);
-        GameButton rankBtn = new GameButton(butX+mulX*2, y, w, h);
-        GameButton exitBtn = new GameButton(butX+mulX*3, y, w, h);
+        GameButton exitBtn = new GameButton(butX+mulX*2, y, w, h);
 
         butX = (int)Math.floor(getWidth()/3-122); //62 is half, 15 add
         mulX = 185;
@@ -61,7 +63,6 @@ public class Osirys extends JPanel implements ActionListener{
 
         autoSetButtonIcons(settingBtn, "settingBtn");
         autoSetButtonIcons(aboutBtn, "aboutBtn");
-        autoSetButtonIcons(rankBtn, "rankBtn");
         autoSetButtonIcons(exitBtn, "exitBtn");
         autoSetButtonIcons(ayaogBtn, "ayaogBtn");
         autoSetButtonIcons(aopBtn, "aopBtn");
@@ -69,7 +70,6 @@ public class Osirys extends JPanel implements ActionListener{
 
         settingBtn.addActionListener(this);
         aboutBtn.addActionListener(this);
-        rankBtn.addActionListener(this);
         exitBtn.addActionListener(this);
         ayaogBtn.addActionListener(this);
         aopBtn.addActionListener(this);
@@ -107,7 +107,6 @@ public class Osirys extends JPanel implements ActionListener{
 
         add(settingBtn);
         add(aboutBtn);
-        add(rankBtn);
         add(exitBtn);
         add(ayaogBtn);
         add(aopBtn);
@@ -199,7 +198,7 @@ public class Osirys extends JPanel implements ActionListener{
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if(command.equalsIgnoreCase("AYAOGBTN")){ //Are You An OS Geek?
-            OsirysGame ayaog = new AYAOG(getMainClass(), score);
+            OsirysGame ayaog = new AYAOG(getMainClass(), score, iss);
             getMainClass().setGame(ayaog);
             createGameThread(ayaog);
         }else if(command.equalsIgnoreCase("AOPBTN")){ //Attack on Process
@@ -216,9 +215,6 @@ public class Osirys extends JPanel implements ActionListener{
         }else if(command.equalsIgnoreCase("ABOUTBTN")){
             AboutPanel ap = new AboutPanel(getOsirys());
             addFloater(ap);
-        }else if(command.equalsIgnoreCase("RANKBTN")){
-            RankPanel rp = new RankPanel(getOsirys());
-            addFloater(rp);
         }else if(command.equalsIgnoreCase("EXITBTN")){
             QuitPanel qp = new QuitPanel(getOsirys());
             addFloater(qp);

@@ -19,8 +19,8 @@ import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
 import gen.ExcelLoader;
-import gen.FileManager;
 import gen.GameButton;
+import gen.InternalStateSave;
 import gen.MenuPanel;
 import gen.QuestionGenerator;
 import gen.Score;
@@ -32,11 +32,12 @@ public class AYAOG extends OsirysGame implements MouseListener{
     private Font font;
     private boolean start = true;
     private QuestionManager qManager;
-    private FileManager fileManager;
     private Level level;
+    private InternalStateSave iss;
 
-    public AYAOG(MainClass mainClass, Score score){
+    public AYAOG(MainClass mainClass, Score score, InternalStateSave iss){
         this.mainClass = mainClass;
+        this.iss = iss;
         this.score = score;
         setCode("ayaog");
         setProperties();
@@ -44,7 +45,7 @@ public class AYAOG extends OsirysGame implements MouseListener{
 
     public void loadGame(){
        loadElements();
-        fileManager.load(qManager, score, level);
+       loadISS();
        updateUI();
     }
 
@@ -53,7 +54,6 @@ public class AYAOG extends OsirysGame implements MouseListener{
         ExcelLoader el = new ExcelLoader(getExcepPath());
         el.loadExcel();
         qManager = new QuestionManager(getAYAOG(), new QuestionGenerator(el.getQuestions()));
-        fileManager = new FileManager(getAYAOG());
 
         level = new Level();
         font = new Font("sans_serif", Font.BOLD, 20);
@@ -113,8 +113,8 @@ public class AYAOG extends OsirysGame implements MouseListener{
         saveBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 if(btnClickCtr>=1){
-                    fileManager.saveAYAOG(qManager, score.getGameScore(), level.getLevel());
-                    CertificatePanel cp = new CertificatePanel(getAYAOG(), false, "save");
+                    saveISS();
+                    ComeBack cp = new ComeBack(getAYAOG());
                     setFloater(cp);
                 }
             }
@@ -124,7 +124,7 @@ public class AYAOG extends OsirysGame implements MouseListener{
             public void actionPerformed(ActionEvent e){
                 if(btnClickCtr>=1){
                     score.incrementTotalScore(score.getGameScore());
-                    fileManager.destroySave();
+                    emptyISS();
                     CertificatePanel cp = new CertificatePanel(getAYAOG(), false, "drop");
                     setFloater(cp);
                 }
@@ -133,7 +133,8 @@ public class AYAOG extends OsirysGame implements MouseListener{
 
         helpBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-               
+                HelpPanel hp = new HelpPanel(getAYAOG());
+                setFloater(hp);
             }
         });
 
@@ -160,21 +161,20 @@ public class AYAOG extends OsirysGame implements MouseListener{
     }
 
     public void lockAnswer(){
-        setAllBtnEnable(false);
-        Thread lockThread = new Thread(new Runnable() {
-            public void run(){
+        // Thread lockThread = new Thread(new Runnable() {
+        //     public void run(){
 
-                //play drum roll
-                try{
-                    Thread.sleep(2500);
-                }catch(Exception e){}
-            }
-        });
-        lockThread.start();
+        //         //play drum roll
+        //         try{
+        //             Thread.sleep(2500);
+        //         }catch(Exception e){}
+        //     }
+        // });
+        // lockThread.start();
         
-        try {
-            lockThread.join();
-        }catch(InterruptedException e1){}
+        // try {
+        //     lockThread.join();
+        // }catch(InterruptedException e1){}
 
         String playerAnswer = selectedChoice.getText();
 
@@ -190,10 +190,14 @@ public class AYAOG extends OsirysGame implements MouseListener{
 
         if(qManager.checkAnswer(playerAnswer)){
             score.setGameScore(level.getPrize());
-            if(level.getLevel()<11){
-                level.incrementLevel();
-                CategoryPanel cp = new CategoryPanel(getAYAOG());
+            level.incrementLevel();
+            if(level.getLevel()-1==10){
+                ContinuePanel cp = new ContinuePanel(getAYAOG());
                 setFloater(cp);
+            }else
+            if(level.getLevel()-1<11){
+                Correct correct = new Correct(getAYAOG());
+                setFloater(correct);
             }else{ //win
                 CertificatePanel cp = new CertificatePanel(getAYAOG(), true, "win");
                 setFloater(cp);
@@ -383,6 +387,7 @@ public class AYAOG extends OsirysGame implements MouseListener{
     }
 
     public void setFloater(MenuPanel panel){
+        setAllBtnEnable(false);
         getAYAOG().add(panel);
         getAYAOG().setComponentZOrder(panel, 0);
         getAYAOG().updateUI();
@@ -390,10 +395,6 @@ public class AYAOG extends OsirysGame implements MouseListener{
 
     public QuestionManager getQuestionManager(){
         return this.qManager;
-    }
-
-    public FileManager getFileManager(){
-        return this.fileManager;
     }
 
     public AYAOG getAYAOG(){
@@ -414,6 +415,24 @@ public class AYAOG extends OsirysGame implements MouseListener{
 
     public void setCopy(boolean status){
         this.copyAlive = status;
+    }
+
+    private void saveISS(){
+        iss.setAyaogLevel(level.getLevel());
+        iss.setAyaogScore(score.getGameScore());
+        iss.setAyaogcopyAlive(copyAlive);
+        iss.setAyaogpeekAlive(peekAlive);
+    }
+
+    private void loadISS(){
+        level.setLevel(iss.getAYAOGLevel());
+        score.setGameScore(iss.getAYAOGScore());
+        copyAlive = iss.getAYAOGcopyAlive();
+        peekAlive = iss.getAYAOGpeekAlive();
+    }
+
+    private void emptyISS(){
+        iss = new InternalStateSave();
     }
 
     @Override

@@ -7,6 +7,7 @@ import exception.CategoryException;
 
 public class QuestionGenerator {
     private ArrayList<Question> questions;
+    private boolean secondChance = true;
 
     public QuestionGenerator(ArrayList<Question> questions){
         this.questions = questions;
@@ -17,7 +18,7 @@ public class QuestionGenerator {
         do{
             q =  questions.get(new Random().nextInt(questions.size()));
         }while(q.isTaken() || q.getAnswer()==null);
-
+        q.setTaken(true);
         return q;
     }
 
@@ -28,10 +29,26 @@ public class QuestionGenerator {
             if(q.getCategory()==categ && !q.isTaken() && q.getAnswer()!=null)
                 categQuestions.add(q);
         }
-        if(categQuestions.size()==0)
-            throw new CategoryException("No questions found in that category!");
+        if(categQuestions.size()==0 && secondChance){
+            for(Question q : questions){
+                if(q.getCategory()==categ && q.getAnswer()!=null){
+                    categQuestions.add(q);
+                    q.setTaken(false);
+                }
+            }
+            if(categQuestions.size()==0)
+                secondChance=false;
+        }
 
-        return categQuestions.get(new Random().nextInt(categQuestions.size()));
+        if(categQuestions.size()==0 && !secondChance){
+            secondChance = true;
+            throw new CategoryException("No questions found in that category!");
+        }
+
+        Question selectedQ = categQuestions.get(new Random().nextInt(categQuestions.size()));
+        selectedQ.setTaken(true);
+
+        return selectedQ;
     }
 
     public void updateQuestions(ArrayList<Question> questions){
