@@ -8,7 +8,8 @@ import java.awt.image.BufferedImage;
 public class MenuPanel extends JPanel{
     protected BufferedImage BG;
     protected String path;
-    protected String srcPath;
+    protected String srcPath="";
+    protected String mid ="";
 
     protected void loadElements(String alt){
         setLayout(null);
@@ -19,8 +20,8 @@ public class MenuPanel extends JPanel{
 
     protected void autoSetIcons(GameButton button, String name){
         button.setIcons(
-            srcPath+"src/normal/"+name+".png",
-            srcPath+"src/hilite/h_"+name+".png",
+            srcPath+"src/"+mid+"normal/"+name+".png",
+            srcPath+"src/"+mid+"hilite/h_"+name+".png",
             name.toUpperCase()
         );
     }

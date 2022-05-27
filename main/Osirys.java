@@ -7,8 +7,10 @@ import ayaog.game.AYAOG;
 import coc.game.COC;
 import gen.GameButton;
 import gen.ImageLoader;
+import gen.MenuPanel;
 import gen.Score;
 
+import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
 import java.awt.Graphics;
@@ -23,6 +25,8 @@ public class Osirys extends JPanel implements ActionListener{
     private BufferedImage BG_IMG, DESC_IMG;
     private String srcPath = "src/img/";
     private Score score;
+    private boolean soundOn = true;
+    private boolean onFloater = false;
 
     public Osirys(MainClass mainClass){
         this.mainClass = mainClass;
@@ -73,7 +77,8 @@ public class Osirys extends JPanel implements ActionListener{
 
         ayaogBtn.addMouseListener(new MouseAdapter(){
             public void mouseEntered(MouseEvent e){
-                addDESC("ayaog");
+                if(!onFloater)
+                    addDESC("ayaog");
             }
             public void mouseExited(MouseEvent e){
                 removeDESC();
@@ -82,7 +87,8 @@ public class Osirys extends JPanel implements ActionListener{
 
         aopBtn.addMouseListener(new MouseAdapter(){
             public void mouseEntered(MouseEvent e){
-                addDESC("aop");
+                if(!onFloater)
+                    addDESC("aop");
             }
             public void mouseExited(MouseEvent e){
                 removeDESC();
@@ -91,7 +97,8 @@ public class Osirys extends JPanel implements ActionListener{
 
         cocBtn.addMouseListener(new MouseAdapter(){
             public void mouseEntered(MouseEvent e){
-                addDESC("coc");
+                if(!onFloater)
+                    addDESC("coc");
             }
             public void mouseExited(MouseEvent e){
                 removeDESC();
@@ -154,6 +161,32 @@ public class Osirys extends JPanel implements ActionListener{
         );
     }
 
+    public void setSoundOn(boolean on){
+        this.soundOn = on;
+    }
+
+    public boolean getSound(){
+        return this.soundOn;
+    }
+
+    public void setOnFloater(boolean status){
+        this.onFloater = status;
+    }
+
+    public void setAllBtnEnable(boolean enable){
+        for(Component c : getOsirys().getComponents())
+            if(c instanceof GameButton)
+                ((GameButton)c).setEnabled(enable);
+    }
+
+    public void addFloater(MenuPanel panel){
+        onFloater = true;
+        setAllBtnEnable(false);
+        getOsirys().add(panel);
+        getOsirys().setComponentZOrder(panel, 0);
+        getOsirys().updateUI();
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
@@ -178,15 +211,17 @@ public class Osirys extends JPanel implements ActionListener{
             getMainClass().setGame(coc);
             createGameThread(coc);
         }else if(command.equalsIgnoreCase("SETTINGBTN")){
-
+            SettingPanel sp = new SettingPanel(getOsirys());
+            addFloater(sp);
         }else if(command.equalsIgnoreCase("ABOUTBTN")){
-            
+            AboutPanel ap = new AboutPanel(getOsirys());
+            addFloater(ap);
         }else if(command.equalsIgnoreCase("RANKBTN")){
-            //show rank retrieve from src
+            RankPanel rp = new RankPanel(getOsirys());
+            addFloater(rp);
         }else if(command.equalsIgnoreCase("EXITBTN")){
-            //ask if sure
-            //record score
-            System.exit(1);
+            QuitPanel qp = new QuitPanel(getOsirys());
+            addFloater(qp);
         }
     }
 }

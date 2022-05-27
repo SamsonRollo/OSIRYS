@@ -15,6 +15,7 @@ public class MainClass extends JFrame{
     private JPanel mainPanel;
     private OsirysGame game;
     private CardLayout card;
+    private Osirys osirys;
 
     public MainClass(){
     	setTrayIcon();
@@ -30,7 +31,7 @@ public class MainClass extends JFrame{
     }
 
     public void loadPanels(){
-        Osirys osirys = new Osirys(this);
+        osirys = new Osirys(this);
         LoadingPanel loadPanel = new LoadingPanel();
         game = new DummyGame();
         card = new CardLayout();
@@ -59,6 +60,10 @@ public class MainClass extends JFrame{
 
     public OsirysGame getGame(){
         return this.game;
+    }
+
+    public Osirys getOsirys(){
+        return this.osirys;
     }
 
     public int suggestedW(){
