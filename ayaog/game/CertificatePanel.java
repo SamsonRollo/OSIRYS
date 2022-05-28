@@ -47,8 +47,6 @@ public class CertificatePanel extends GameMenuPanel{
 
                 if(win){
                     ayaog.resetGame();
-                    CategoryPanel cp = new CategoryPanel(ayaog);
-                    ayaog.setFloater(cp);
                 }
             }
         });

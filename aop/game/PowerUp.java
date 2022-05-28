@@ -4,7 +4,6 @@ import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import gen.MusicType;
 import gen.QuestionPanel;
 
 import java.awt.event.MouseEvent;
@@ -31,14 +30,12 @@ public class PowerUp extends GameObject{
     }
 
     public void executePowerUp(int selectedPowerUp){
-        aop.getSoundManager().play(MusicType.POWERUP);
         if(!aop.getGenerator().isQuestionsNull()){
             boolean playBol = aop.isPlay();
             aop.setPlay(false);
             QuestionPanel qp = new QuestionPanel(null, aop, playBol);
             aop.addFloater(qp);
         }
-
         if(selectedPowerUp%11==0){
             aop.setAllProcessDead();
         } else if(selectedPowerUp%5==0){

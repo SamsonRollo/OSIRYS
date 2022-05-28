@@ -22,7 +22,8 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
             game = coc;
         else
             game = aop;
-
+        
+        game.getSoundManager().play(MusicType.POWERUP);
         this.isPlay = playBol;
         this.path = "src/img/powerupquestion.png";
         this.srcPath = "";
@@ -40,15 +41,16 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
         question.setVerticalTextPosition(JLabel.CENTER);
         question.setFont(new Font("sans_serif", Font.PLAIN, 18));
 
-        int y = 290, yMul = 48;
-        for(int i=0; i<qObj.getChoices().size(); i++){
+        int y = 290, yMul = 48, i = 0;
+        for(String choice : qObj.getChoices()){
             GameButton btn = new GameButton(getWidth()/2-276, y+yMul*i, 553, 41);
             autoSetIcons(btn, "mchoice");
-            btn.setText("<html>"+qObj.getChoiceAt(i)+"</html>");
+            btn.setText("<html>"+choice+"</html>");
             btn.setHorizontalTextPosition(GameButton.CENTER);
             btn.setVerticalTextPosition(GameButton.CENTER);
             btn.addMouseListener(this);
             add(btn);
+            i++;
         }
 
         add(question);
@@ -85,7 +87,7 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
 
             if(checkAnswer(text, qObj)){
                 cp = new CheckPanel(game, true);
-                game.getScore().incrementBonusScore(200);
+                game.getScore().incrementBonusScore(50);
             }else{
                 cp = new CheckPanel(game, false);
             }

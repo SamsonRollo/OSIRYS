@@ -66,6 +66,7 @@ public class COC extends OsirysGame{
         sManager.addMusic("coc", MusicType.BG);
         sManager.addMusic("coc", MusicType.LEVEL);
         sManager.addMusic("coc", MusicType.GAMEOVER);
+        sManager.addMusic("coc",MusicType.BULLET);
         sManager.addMusic("coc", MusicType.POWERUP);
     }
 

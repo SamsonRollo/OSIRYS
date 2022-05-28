@@ -15,7 +15,7 @@ public class QuestionGenerator {
     }
 
     public Question generate(){
-        Question q;
+        Question q= new Question();
         if(numTaken==questions.size()){
             for(Question ques : questions)
                 ques.setTaken(false);
@@ -23,7 +23,7 @@ public class QuestionGenerator {
         }
         do{
             q =  questions.get(new Random().nextInt(questions.size()));
-        }while(q.isTaken() && q.getAnswer()==null);
+        }while(q.isTaken() || q.getAnswer()=="" || q.getQuestion()=="");
         q.setTaken(true);
         numTaken++;
         return q;

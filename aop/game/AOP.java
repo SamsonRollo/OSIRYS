@@ -66,6 +66,7 @@ public class AOP extends OsirysGame{
     private void loadSounds(){
         sManager.addMusic("aop", MusicType.BG);
         sManager.addMusic("aop", MusicType.GAMEOVER);
+        sManager.addMusic("aop",MusicType.BULLET);
         sManager.addMusic("aop", MusicType.POWERUP);
     }
 
