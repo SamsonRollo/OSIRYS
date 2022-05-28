@@ -26,13 +26,16 @@ public class QuitPanel extends GameMenuPanel {
                 aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.setAllBtnEnabled(true);
                 aop.updateUI();
             }
         });
 
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                aop.getScore().setTotalScore(aop.getScore().getGameScore());
+                aop.getScore().incrementTotalScore(aop.getScore().getGameScore());
+                aop.getScore().resetCurrentGameScore();
+                aop.getScore().resetCurrentLevelScore();
                 aop.getMainClass().showScreen(Screen.MENU.name());
             }
         });

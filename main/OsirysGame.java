@@ -1,12 +1,16 @@
 package main;
 
 import javax.swing.JPanel;
+
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
+import gen.ExcelLoader;
 import gen.GameButton;
 import gen.ImageLoader;
+import gen.QuestionGenerator;
 import gen.Score;
 
 public abstract class OsirysGame extends JPanel{
@@ -15,9 +19,27 @@ public abstract class OsirysGame extends JPanel{
     protected Score score;
     protected MainClass mainClass;
     protected BufferedImage BG_IMG;
+    protected QuestionGenerator generator;
+    protected boolean hasFloater = false;
+    protected File excelFile = null;
 
     public String getCode(){
         return this.code;
+    }
+
+    protected void loadGenerator(){
+        ExcelLoader el;
+        if(excelFile!=null)
+            el = new ExcelLoader(excelFile);    
+
+        el = new ExcelLoader(getExcelPath());
+
+        try{
+            el.loadExcel();
+        }catch(Exception e){
+            new exception.ErrorReport(getMainClass(), e.getMessage(), "Import Error");
+        }
+        generator = new QuestionGenerator(el.getQuestions());
     }
 
     public void setProperties(){
@@ -36,12 +58,24 @@ public abstract class OsirysGame extends JPanel{
         this.code = code;
     }
 
-    protected String getExcepPath(){
+    protected String getExcelPath(){
         return this.excelPath;
     }
 
     public Score getScore(){
         return this.score;
+    }
+
+    public QuestionGenerator getGenerator(){
+        return this.generator;
+    }
+
+    public void setHasFloater(boolean stat){
+        this.hasFloater = stat;
+    }
+
+    public boolean getHasFloater(){
+        return this.hasFloater;
     }
 
     protected void autoSetIcons(GameButton button, String name){
@@ -68,4 +102,5 @@ public abstract class OsirysGame extends JPanel{
     }
 
     abstract protected void loadGame();
+    public abstract void revertChanges(boolean status);
 }

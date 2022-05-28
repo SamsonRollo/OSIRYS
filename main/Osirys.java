@@ -11,9 +11,12 @@ import gen.InternalStateSave;
 import gen.MenuPanel;
 import gen.Score;
 
+import java.awt.Font;
+import java.awt.Color;
 import java.awt.Component;
 import java.awt.Dimension;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
@@ -25,10 +28,12 @@ public class Osirys extends JPanel implements ActionListener{
     private MainClass mainClass;
     private BufferedImage BG_IMG, DESC_IMG;
     private String srcPath = "src/img/";
+    private File excelFile = null;
     private Score score;
     private InternalStateSave iss;
     private boolean soundOn = true;
     private boolean onFloater = false;
+    private Font font;
 
     public Osirys(MainClass mainClass){
         this.mainClass = mainClass;
@@ -51,7 +56,8 @@ public class Osirys extends JPanel implements ActionListener{
         GameButton aboutBtn = new GameButton(butX+mulX, y, w, h);
         GameButton exitBtn = new GameButton(butX+mulX*2, y, w, h);
 
-        butX = (int)Math.floor(getWidth()/3-122); //62 is half, 15 add
+        font = new Font("sans_serif", Font.BOLD, 18);
+        butX = (int)Math.floor(getWidth()/3-122);
         mulX = 185;
         y = 170;
         w = 125;
@@ -186,27 +192,36 @@ public class Osirys extends JPanel implements ActionListener{
         getOsirys().updateUI();
     }
 
+    public void setExcelFile(File excelFile){
+        this.excelFile = excelFile;
+    }
+
     @Override
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
         g.drawImage(BG_IMG,0,0,null);
         g.drawImage(DESC_IMG, getWidth()/2-227, 285, null);
+        g.setColor(Color.WHITE);
+        g.fillRect(10, 10, 150, 30);
+        g.setFont(font);
+        g.setColor(Color.BLACK);
+        g.drawString(String.valueOf(score.getTotalScore()), 15, 30);
     }
 
     @Override
     public void actionPerformed(ActionEvent e) {
         String command = e.getActionCommand();
         if(command.equalsIgnoreCase("AYAOGBTN")){ //Are You An OS Geek?
-            OsirysGame ayaog = new AYAOG(getMainClass(), score, iss);
+            OsirysGame ayaog = new AYAOG(getMainClass(), score, iss, excelFile);
             getMainClass().setGame(ayaog);
             createGameThread(ayaog);
         }else if(command.equalsIgnoreCase("AOPBTN")){ //Attack on Process
-            OsirysGame aop = new AOP(getMainClass(), score);
+            OsirysGame aop = new AOP(getMainClass(), score, excelFile);
             getMainClass().setGame(aop);
             createGameThread(aop);
         }else if(command.equalsIgnoreCase("COCBTN")){ //Crush 'em or Crash me
-            OsirysGame coc = new COC(getMainClass(), score);
+            OsirysGame coc = new COC(getMainClass(), score, excelFile);
             getMainClass().setGame(coc);
             createGameThread(coc);
         }else if(command.equalsIgnoreCase("SETTINGBTN")){

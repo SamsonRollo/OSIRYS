@@ -30,6 +30,8 @@ public class GameOverPanel extends GameMenuPanel {
             public void actionPerformed(ActionEvent e){
                 aop.remove(getPanel());
                 aop.resetGame();
+                aop.setAllBtnEnabled(true);
+                aop.updateUI();
             }
         });
 
@@ -40,10 +42,9 @@ public class GameOverPanel extends GameMenuPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        g.drawImage(BG,0,0, null);
         g.setColor(Color.BLACK);
         g.setFont(font);
-        g.drawString(String.valueOf(score.getGameScore()), 275, 271);
+        g.drawString(String.valueOf(score.getGameScore()+score.getBonusScore()), 275, 271);
 
     }
 }

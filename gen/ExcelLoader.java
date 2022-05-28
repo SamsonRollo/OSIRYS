@@ -2,52 +2,42 @@ package gen;
 
 import java.util.ArrayList;
 import java.io.File;
-import java.io.FileInputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URL;
-import java.net.URLDecoder;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
 import org.apache.poi.ss.usermodel.DataFormatter;
 import org.apache.poi.ss.usermodel.Row;
 import org.apache.poi.xssf.usermodel.XSSFSheet;
-import org.apache.poi.xssf.usermodel.XSSFWorkbook; 
+import org.apache.poi.xssf.usermodel.XSSFWorkbook;
+
+import exception.CannotImportExcelException;
 
 public class ExcelLoader{
     private String fileName;
     private ArrayList<Question> questions;
+    private File file;
 
     public ExcelLoader(String fileName){
         this.fileName = fileName;
         this.questions = new ArrayList<Question>();
     }
 
-    public void loadExcel(){
-        URL url = this.getClass().getClassLoader().getResource(fileName);
-        String path = this.getClass().getProtectionDomain().getCodeSource().getLocation().getPath();
-        String decodePath = (new File(path)).getParentFile().getPath();
-        String xlsxFile = decodePath+"/imports/questions.xlsx";
+    public ExcelLoader(File file){
+        this.file = file;
+        this.questions = new ArrayList<Question>();
+    }
 
-
-        // try {
-        //     decodePath = URLDecoder.decode(path, "UTF-8");
-        // } catch (UnsupportedEncodingException e1) {
-        //     // TODO Auto-generated catch block
-        //     e1.printStackTrace();
-        // }
-        System.out.println(" pAHJT "+new File(xlsxFile).exists());
+    public void loadExcel() throws CannotImportExcelException{
 
         try {
-            FileInputStream fis = new FileInputStream(new File(url.toURI()));
-            XSSFWorkbook workbook = new XSSFWorkbook(fis);
+            if(file==null)
+                file = new File(this.getClass().getClassLoader().getResource(fileName).toURI());
+            XSSFWorkbook workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
             retrieveData(sheet);
             workbook.close();
         } catch (Exception e) {
-            e.printStackTrace();
-            return;
-            //report an error
+            throw new CannotImportExcelException(e.getMessage());
         }
     }
 

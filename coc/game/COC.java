@@ -5,12 +5,16 @@ import javax.swing.ActionMap;
 import javax.swing.InputMap;
 import javax.swing.JComponent;
 import javax.swing.KeyStroke;
+
+import exception.ErrorReport;
+
 import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.awt.Font;
 
 import gen.GameButton;
@@ -37,7 +41,8 @@ public class COC extends OsirysGame{
     public Middler middler = null;
     public PausePanel pausePanel;
 
-    public COC(MainClass mainClass, Score score){
+    public COC(MainClass mainClass, Score score, File excelFile){
+        this.excelFile = excelFile;
         this.mainClass = mainClass;
         this.score = score;
         setCode("coc");
@@ -46,6 +51,11 @@ public class COC extends OsirysGame{
 
     protected void loadGame(){
         loadElements();
+        loadGenerator();
+        if(generator.isQuestionsNull())
+            new ErrorReport(getMainClass(), 
+                "Excel was not imported. No bonus for you.",
+                "No Bonus");
     }
 
     public void loadElements(){
@@ -190,7 +200,8 @@ public class COC extends OsirysGame{
         getCOC().remove(ship);
         ship = null;
         den.killAllBugs();
-        score.incrementTotalScore(score.getGameScore());
+        score.incrementTotalScore(score.getGameScore()+score.getBonusScore());
+        score.resetCurrentBonusScore();
         score.resetCurrentGameScore();
         score.resetCurrentLevelScore();
         updateScoreIMG();
@@ -269,6 +280,15 @@ public class COC extends OsirysGame{
             }
         }
 
+    }
+
+    public void revertChanges(boolean status){
+        setButtonsEnabled(true);
+        if(!isNewGame()){
+            interactPlayBut(status, true);
+            if(!status)
+                showPause();
+        }
     }
 
     public Middler getMiddler(){
@@ -355,7 +375,7 @@ public class COC extends OsirysGame{
 
         g.setColor(Color.black);
         g.setFont(font);
-        g.drawString(String.valueOf(score.getGameScore()), 44, 50);
+        g.drawString(String.valueOf(score.getGameScore()+score.getBonusScore()), 44, 50);
     }
     
 }

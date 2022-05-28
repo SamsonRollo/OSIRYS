@@ -5,4 +5,8 @@ public class DummyGame extends OsirysGame{
 
     @Override
     protected void loadGame() {}
+
+    @Override
+    public void revertChanges(boolean status) {}
+    
 }

@@ -4,6 +4,7 @@ public class Score {
     private int gameScore;
     private int totalScore;
     private int levelScore;
+    private int bonusScore = 0;
 
     public Score(){
         this.gameScore = 0;
@@ -59,5 +60,21 @@ public class Score {
 
     public void resetCurrentLevelScore(){
         this.levelScore = 0;
+    }
+
+    public void setBonusScore(int bonusScore){
+        this.bonusScore = bonusScore;
+    }
+
+    public void incrementBonusScore(int bonusScore){
+        this.bonusScore+=bonusScore;
+    }
+
+    public int getBonusScore(){
+        return this.bonusScore;
+    }
+
+    public void resetCurrentBonusScore(){
+        this.bonusScore = 0;
     }
 }

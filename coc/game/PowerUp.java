@@ -1,6 +1,9 @@
 package coc.game;
 
 import java.util.Random;
+
+import gen.QuestionPanel;
+
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseAdapter;
 
@@ -46,7 +49,13 @@ public class PowerUp extends GameObject implements Runnable{
     }
 
     public void executePowerUp(int selectedPowerUp){
-        //insert question pop up here
+        if(!coc.getGenerator().isQuestionsNull()){
+            boolean playBol = coc.isPlay();
+            coc.setPlay(false);
+            QuestionPanel qp = new QuestionPanel(coc, null, playBol);
+            coc.addFloater(qp);
+        }
+        
         if(selectedPowerUp%11==0){
             coc.getDen().killAllBugs();
         } else if(selectedPowerUp%5==0){

@@ -1,5 +1,6 @@
 package aop.game;
 
+import java.awt.Component;
 import java.awt.Color;
 import java.awt.Font;
 import java.awt.Rectangle;
@@ -7,11 +8,12 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
+import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
-import aop.exception.ErrorReport;
+import exception.ErrorReport;
 import gen.GameButton;
 import gen.GameMenuPanel;
 import gen.ImageLoader;
@@ -40,7 +42,8 @@ public class AOP extends OsirysGame{
     private Font font;
     private PowerUp powUp = null;
 
-    public AOP(MainClass mainClass, Score score){
+    public AOP(MainClass mainClass, Score score, File excelFile){
+        this.excelFile = excelFile;
         this.mainClass = mainClass;
         this.score = score;
         setCode("aop");
@@ -49,6 +52,11 @@ public class AOP extends OsirysGame{
 
     public void loadGame(){
         loadElements();
+        loadGenerator();
+        if(generator.isQuestionsNull())
+            new ErrorReport(getMainClass(), 
+                "Excel was not imported. No bonus for you.",
+                "No Bonus");
     }
 
     public void loadElements(){
@@ -155,6 +163,16 @@ public class AOP extends OsirysGame{
         }
     }
 
+    public void setAllBtnEnabled(boolean status){
+        for(Component c : getAOP().getComponents())
+            if(c instanceof GameButton)
+                ((GameButton)c).setEnabled(status);
+        if(status && isPlay())
+            playBut.setEnabled(false);
+        else if(status && !isPlay())
+            pauseBut.setEnabled(false);
+    }
+
     public boolean isPlay(){
         return this.playBoolean;
     }
@@ -228,7 +246,8 @@ public class AOP extends OsirysGame{
 
     public void setAllProcessDead(){
         for(Process p : processes){
-            processLane[p.getLane()]--;
+            if(processLane[p.getLane()]>0)
+                processLane[p.getLane()]--;
             p.setAlive(false);
         }
     }
@@ -282,7 +301,7 @@ public class AOP extends OsirysGame{
                         getAOP().add(powUp);
                         getAOP().setComponentZOrder(powUp, 0);
                         lagctr=0;
-                        powerupLag = (new Random().nextInt(749 + 1 - 92)+92);
+                        powerupLag = (new Random().nextInt(749 + 1 - 102)+102);
                     }
                     if(powUp!=null && !powUp.isAlive()){
                         getAOP().remove(powUp);
@@ -318,8 +337,13 @@ public class AOP extends OsirysGame{
     public void setGameOver(){
         setPlay(false);
         GameOverPanel goPanel = new GameOverPanel(getAOP(), score, font);
-        getAOP().setVisible(false);
-        mainClass.add(goPanel);
+        addFloater(goPanel);
+    }
+
+    public void revertChanges(boolean status){
+        if(status)
+            playingStatus(true);
+        setAllBtnEnabled(true);
     }
 
     public int[] getProcessesLane(){
@@ -376,12 +400,15 @@ public class AOP extends OsirysGame{
     }
 
     public void addFloater(GameMenuPanel panel){
+        setAllBtnEnabled(false);
         getAOP().add(panel);
         getAOP().setComponentZOrder(panel, 0);
         getAOP().updateUI();
     }
 
     public void resetGame(){
+        if(powUp!=null)
+            remove(powUp);
         powUp = null;
         setAllProcessDead();
         removeProcess();
@@ -390,8 +417,9 @@ public class AOP extends OsirysGame{
             p.removeBullet();
         }
         removeProcessor();
-        score.incrementTotalScore(score.getGameScore());
+        score.incrementTotalScore(score.getGameScore()+score.getBonusScore());
         score.resetCurrentGameScore();
+        score.resetCurrentBonusScore();
         upgrade = new Upgrade(1, 5, 1000, 1);
         processes = new ArrayList<Process>();
         processors = new ArrayList<Processor>();
@@ -412,7 +440,6 @@ public class AOP extends OsirysGame{
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        g.drawImage(BG_IMG, 0, 0, null);
         g.drawImage(CURR_ANGER, 31, 284+ANGER_IMG.getHeight()-CURR_ANGER.getHeight(), null); 
 
         if(INIT_IMG!=null)
@@ -420,6 +447,6 @@ public class AOP extends OsirysGame{
 
         g.setColor(Color.white);
         g.setFont(font);
-        g.drawString(String.valueOf(score.getGameScore()), 583, 53);
+        g.drawString(String.valueOf(score.getGameScore()+score.getBonusScore()), 583, 53);
     }
 }

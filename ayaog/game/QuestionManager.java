@@ -20,6 +20,7 @@ public class QuestionManager {
     private QuestionType type;
     private String formulatedQuestion;
     private boolean trueFalseAnswer;
+    private boolean hasOverriden = false;
 
     public QuestionManager(OsirysGame game, QuestionGenerator generator){
         this.game = game;
@@ -27,7 +28,7 @@ public class QuestionManager {
     }
 
     public boolean formulateQuestion(QuestionCategory categ, QuestionType type){
-        this.type = type;
+        this.hasOverriden = false;
         
         try{
             question = generator.generate(categ);
@@ -36,11 +37,28 @@ public class QuestionManager {
             return false;
         }
 
+        type = checkToOverride(question.getQuestion(), type);
+        this.type = type;
+
         if(type==QuestionType.MULTIPLE)
             formulatedQuestion = question.getQuestion();
         else
             formulatedQuestion = formulateTrueFalseQuestion(question);
+
         return true;
+    }
+
+    private QuestionType checkToOverride(String question, QuestionType type){
+        question = question.toLowerCase();
+        if(question.contains("among") || 
+        question.contains("which") ||
+        question.contains("except") ||
+        question.contains("following"))
+            if(type==QuestionType.TRUEFALSE){
+                type = QuestionType.MULTIPLE;
+                hasOverriden = true;
+            }
+        return type;
     }
 
     private String formulateTrueFalseQuestion(Question question){
@@ -73,6 +91,10 @@ public class QuestionManager {
 
     public boolean questionHasImage(){
         return question.hasImage();
+    }
+
+    public boolean hasOverriden(){
+        return this.hasOverriden;
     }
 
     //tabbooo

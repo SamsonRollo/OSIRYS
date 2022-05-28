@@ -81,6 +81,7 @@ public class UpgradePanel extends GameMenuPanel {
                 aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.setAllBtnEnabled(true);
                 aop.updateUI();
             }
         });
@@ -100,7 +101,6 @@ public class UpgradePanel extends GameMenuPanel {
     public void paintComponent(Graphics g){
         super.paintComponent(g);
 
-        g.drawImage(BG,0,0, null);
         g.setFont(font);
         g.setColor(Color.white);
         g.drawString(String.valueOf(upgrade.getToken()), 265, 127);

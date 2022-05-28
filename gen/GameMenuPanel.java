@@ -11,7 +11,6 @@ public abstract class GameMenuPanel extends MenuPanel{
         setOpaque(false);
         ImageLoader il = new ImageLoader(path, alt);
         BG = il.getBuffImage();
-        
         setBoundsAux();
     }
 

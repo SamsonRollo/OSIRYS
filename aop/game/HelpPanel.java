@@ -35,6 +35,7 @@ public class HelpPanel extends GameMenuPanel {
                 aop.remove(getPanel());
                 if(isPlay)
                     aop.playingStatus(true);
+                aop.setAllBtnEnabled(true);
                 aop.updateUI();    
             }
         });

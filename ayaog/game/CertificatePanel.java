@@ -29,17 +29,25 @@ public class CertificatePanel extends GameMenuPanel{
 
         autoSetIcons(okBtn, "ok");
 
+        
+
         okBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                ayaog.remove(getPanel());
+
                 if(command.equals("drop")){
                     ayaog.getMainClass().showScreen(Screen.MENU.name());
                 }
+                if(!win){
+                    LoseEarn le = new LoseEarn(ayaog);
+                    ayaog.setFloater(le);
+                }
 
-                ayaog.remove(getPanel());
-                ayaog.resetGame();
-
-                CategoryPanel cp = new CategoryPanel(ayaog);
-                ayaog.setFloater(cp);
+                if(win){
+                    ayaog.resetGame();
+                    CategoryPanel cp = new CategoryPanel(ayaog);
+                    ayaog.setFloater(cp);
+                }
             }
         });
 

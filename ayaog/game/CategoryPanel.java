@@ -4,9 +4,6 @@ import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.util.Random;
 
-import aop.exception.ErrorReport;
-
-
 import gen.GameButton;
 import gen.GameMenuPanel;
 import gen.QuestionCategory;
@@ -56,7 +53,7 @@ public class CategoryPanel extends GameMenuPanel implements ActionListener{
     public void actionPerformed(ActionEvent e){
         
         if(ayaog.getQuestionManager().getQuestionGenerator().isQuestionsNull()){
-            new ErrorReport(ayaog.getMainClass(),
+            new exception.ErrorReport(ayaog.getMainClass(),
                 "No questions imported!",
                  "Invalid Category"
             );
@@ -83,6 +80,9 @@ public class CategoryPanel extends GameMenuPanel implements ActionListener{
             type = QuestionType.TRUEFALSE;
         
         if(ayaog.getQuestionManager().formulateQuestion(categ, type)){
+            if(ayaog.getQuestionManager().hasOverriden())
+                type = ayaog.getQuestionManager().getQuestionType();
+
             ayaog.remove(getPanel());
             ayaog.setAllBtnEnable(true);
             ayaog.loadGameScreen(type);

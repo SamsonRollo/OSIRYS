@@ -21,6 +21,7 @@ public class PausePanel extends GameMenuPanel {
             public void actionPerformed(ActionEvent e){
                 aop.remove(getPanel());
                 aop.playingStatus(true);
+                aop.setAllBtnEnabled(true);
                 aop.updateUI();
             }
         });

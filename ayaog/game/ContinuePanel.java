@@ -27,14 +27,17 @@ public class ContinuePanel extends GameMenuPanel{
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 ayaog.remove(getPanel());
+                CategoryPanel cp = new CategoryPanel(ayaog);
+                ayaog.setFloater(cp);
                 ayaog.updateUI();
             }
         });
 
         no.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
+                ayaog.getScore().incrementTotalScore(ayaog.getScore().getGameScore());
                 ayaog.remove(getPanel());
-                CertificatePanel cp = new CertificatePanel(ayaog, false, "none");
+                CertificatePanel cp = new CertificatePanel(ayaog, false, "noncontinue");
                 ayaog.setFloater(cp);
                 ayaog.updateUI();
             }

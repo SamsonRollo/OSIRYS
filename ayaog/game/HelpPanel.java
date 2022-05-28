@@ -35,6 +35,11 @@ public class HelpPanel extends GameMenuPanel {
                 ayaog.setAllBtnEnable(true);
                 ayaog.remove(getPanel());
                 ayaog.updateUI();
+                if(ayaog.getHasFloater()){
+                    CategoryPanel cp = new CategoryPanel(ayaog);
+                    ayaog.setFloater(cp);
+                    ayaog.setHasFloater(false);
+                }
             }
         });
         

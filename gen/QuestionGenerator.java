@@ -46,9 +46,19 @@ public class QuestionGenerator {
         }
 
         Question selectedQ = categQuestions.get(new Random().nextInt(categQuestions.size()));
+        selectedQ.updateChoices(rearrangeChoices(selectedQ.getChoices()));
         selectedQ.setTaken(true);
 
         return selectedQ;
+    }
+
+    private ArrayList<String> rearrangeChoices(ArrayList<String> choices){
+        ArrayList<String> shuffled = new ArrayList<>();
+        while(choices.size()>0){
+            int randIdx = new Random().nextInt(choices.size());
+            shuffled.add(choices.remove(randIdx));
+        }
+        return shuffled;
     }
 
     public void updateQuestions(ArrayList<Question> questions){

@@ -4,14 +4,14 @@ import java.util.ArrayList;
 import java.awt.image.BufferedImage;
 
 public class Question {
-    private String id;
-    private QuestionCategory category;
-    private String question;
+    private String id = "";
+    private QuestionCategory category = null;
+    private String question = "";
     private ArrayList<String> choices;
-    private String answer;
+    private String answer = "";
     private boolean taken;
-    private String imgPath;
-    private BufferedImage image;
+    private String imgPath = "";
+    private BufferedImage image = null;
 
     public Question(){
         taken = false;
@@ -105,4 +105,8 @@ public class Question {
     public boolean isTaken(){
         return this.taken;
     }  
+
+    public void updateChoices(ArrayList<String> newChoice){
+        this.choices = newChoice;
+    }
 }

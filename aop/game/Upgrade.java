@@ -1,6 +1,9 @@
 package aop.game;
 
-import aop.exception.*;
+import exception.BulletUpgradeException;
+import exception.CoreIncrementException;
+import exception.TokenException;
+
 import java.awt.Rectangle;
 
 public class Upgrade {
