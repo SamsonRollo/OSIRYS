@@ -1,10 +1,12 @@
 package coc.game;
 
 import gen.GameMenuPanel;
+import gen.MusicType;
 
 public class LevelUpPanel extends GameMenuPanel implements Runnable{
     
     public LevelUpPanel(COC coc){
+        coc.getSoundManager().play(MusicType.LEVEL);
         this.game = coc;
         this.path = "coc/src/gamelevelup.png";
         loadElements("over");

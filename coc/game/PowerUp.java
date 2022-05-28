@@ -2,6 +2,7 @@ package coc.game;
 
 import java.util.Random;
 
+import gen.MusicType;
 import gen.QuestionPanel;
 
 import java.awt.event.MouseEvent;
@@ -49,6 +50,7 @@ public class PowerUp extends GameObject implements Runnable{
     }
 
     public void executePowerUp(int selectedPowerUp){
+        coc.getSoundManager().play(MusicType.POWERUP);
         if(!coc.getGenerator().isQuestionsNull()){
             boolean playBol = coc.isPlay();
             coc.setPlay(false);

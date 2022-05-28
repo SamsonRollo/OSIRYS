@@ -7,11 +7,13 @@ import java.awt.Font;
 
 import gen.GameButton;
 import gen.GameMenuPanel;
+import gen.MusicType;
 
 public class GameOverPanel extends GameMenuPanel {
     private Font font;
 
     public GameOverPanel(COC coc){
+        coc.getSoundManager().play(MusicType.GAMEOVER);
         this.game = coc;
         this.font = new Font("sans_serif", Font.BOLD, 25);;
         this.path = "coc/src/gameover.png";

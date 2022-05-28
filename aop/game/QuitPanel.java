@@ -36,6 +36,7 @@ public class QuitPanel extends GameMenuPanel {
                 aop.getScore().incrementTotalScore(aop.getScore().getGameScore());
                 aop.getScore().resetCurrentGameScore();
                 aop.getScore().resetCurrentLevelScore();
+                aop.getSoundManager().stopAll();
                 aop.getMainClass().showScreen(Screen.MENU.name());
             }
         });

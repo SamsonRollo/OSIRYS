@@ -5,6 +5,10 @@
         "bin/poi-3.17.jar",
         "bin/poi-ooxml-3.17.jar",
         "bin/poi-ooxml-schemas-3.17.jar",
-        "bin/xmlbeans-2.6.0.jar"
+        "bin/xmlbeans-2.6.0.jar",
+        "/media/esmi/LOCAL BACKUP/UP skuls/3rd year 2nd sem answers/125/ASS3/bin/javafx.base.jar",
+        "/media/esmi/LOCAL BACKUP/UP skuls/3rd year 2nd sem answers/125/ASS3/bin/javafx.graphics.jar",
+        "/media/esmi/LOCAL BACKUP/UP skuls/3rd year 2nd sem answers/125/ASS3/bin/javafx.media.jar",
+        "/media/esmi/LOCAL BACKUP/UP skuls/3rd year 2nd sem answers/125/ASS3/bin/javafx.swing.jar"
     ]
 }

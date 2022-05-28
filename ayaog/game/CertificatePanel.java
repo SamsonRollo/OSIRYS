@@ -5,6 +5,7 @@ import java.awt.event.ActionEvent;
 
 import gen.GameButton;
 import gen.GameMenuPanel;
+import gen.MusicType;
 import main.Screen;
 
 public class CertificatePanel extends GameMenuPanel{
@@ -36,6 +37,7 @@ public class CertificatePanel extends GameMenuPanel{
                 ayaog.remove(getPanel());
 
                 if(command.equals("drop")){
+                    ayaog.getSoundManager().stop(MusicType.BG);
                     ayaog.getMainClass().showScreen(Screen.MENU.name());
                 }
                 if(!win){

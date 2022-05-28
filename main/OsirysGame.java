@@ -12,6 +12,7 @@ import gen.GameButton;
 import gen.ImageLoader;
 import gen.QuestionGenerator;
 import gen.Score;
+import gen.SoundManager;
 
 public abstract class OsirysGame extends JPanel{
     private String excelPath = "src/file/questions.xlsx";
@@ -22,6 +23,7 @@ public abstract class OsirysGame extends JPanel{
     protected QuestionGenerator generator;
     protected boolean hasFloater = false;
     protected File excelFile = null;
+    protected SoundManager sManager;
 
     public String getCode(){
         return this.code;
@@ -40,6 +42,10 @@ public abstract class OsirysGame extends JPanel{
             new exception.ErrorReport(getMainClass(), e.getMessage(), "Import Error");
         }
         generator = new QuestionGenerator(el.getQuestions());
+    }
+
+    protected void loadSoundManager(){
+        sManager = new SoundManager(this);
     }
 
     public void setProperties(){
@@ -92,6 +98,10 @@ public abstract class OsirysGame extends JPanel{
 
     public OsirysGame getGame(){
         return this;
+    }
+
+    public SoundManager getSoundManager(){
+        return this.sManager;
     }
 
     @Override

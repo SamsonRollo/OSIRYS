@@ -8,6 +8,7 @@ import exception.CategoryException;
 public class QuestionGenerator {
     private ArrayList<Question> questions;
     private boolean secondChance = true;
+    private int numTaken = 0;
 
     public QuestionGenerator(ArrayList<Question> questions){
         this.questions = questions;
@@ -15,10 +16,16 @@ public class QuestionGenerator {
 
     public Question generate(){
         Question q;
+        if(numTaken==questions.size()){
+            for(Question ques : questions)
+                ques.setTaken(false);
+            numTaken = 0;
+        }
         do{
             q =  questions.get(new Random().nextInt(questions.size()));
-        }while(q.isTaken() || q.getAnswer()==null);
+        }while(q.isTaken() && q.getAnswer()==null);
         q.setTaken(true);
+        numTaken++;
         return q;
     }
 

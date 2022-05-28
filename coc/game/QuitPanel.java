@@ -25,6 +25,7 @@ public class QuitPanel extends GameMenuPanel {
                 coc.getScore().incrementTotalScore(coc.getScore().getGameScore());
                 coc.getScore().resetCurrentGameScore();
                 coc.getScore().resetCurrentLevelScore();
+                coc.getSoundManager().stopAll();
                 coc.getMainClass().showScreen(Screen.MENU.name());
             }
         });

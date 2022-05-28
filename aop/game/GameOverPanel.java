@@ -2,6 +2,7 @@ package aop.game;
 
 import gen.GameButton;
 import gen.GameMenuPanel;
+import gen.MusicType;
 import gen.Score;
 
 import java.awt.Font;
@@ -15,6 +16,7 @@ public class GameOverPanel extends GameMenuPanel {
     private Font font;
 
     public GameOverPanel(AOP aop, Score score, Font font){
+        aop.getSoundManager().play(MusicType.GAMEOVER);
         this.game = aop;
         this.score = score;
         this.font = font;

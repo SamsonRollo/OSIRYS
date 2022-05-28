@@ -19,6 +19,7 @@ import java.awt.Font;
 
 import gen.GameButton;
 import gen.ImageLoader;
+import gen.MusicType;
 import gen.Score;
 import gen.GameMenuPanel;
 import main.MainClass;
@@ -56,6 +57,16 @@ public class COC extends OsirysGame{
             new ErrorReport(getMainClass(), 
                 "Excel was not imported. No bonus for you.",
                 "No Bonus");
+        loadSoundManager();
+        loadSounds();
+        sManager.loopBG();
+    }
+
+    private void loadSounds(){
+        sManager.addMusic("coc", MusicType.BG);
+        sManager.addMusic("coc", MusicType.LEVEL);
+        sManager.addMusic("coc", MusicType.GAMEOVER);
+        sManager.addMusic("coc", MusicType.POWERUP);
     }
 
     public void loadElements(){

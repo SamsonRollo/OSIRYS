@@ -1,15 +1,21 @@
 package gen;
 
-import java.applet.Applet;
-import java.applet.AudioClip;
-import java.net.URL;
+import java.net.URISyntaxException;
+import javafx.scene.media.Media;
+import javafx.scene.media.MediaPlayer;
+import javafx.util.Duration;
 
 public class MusicPlayer{
-    private AudioClip sound;
+    private MediaPlayer sound;
 
     public MusicPlayer(String path){
-        URL url = this.getClass().getClassLoader().getResource("file:"+path);
-        sound = Applet.newAudioClip(url);
+        Media song=null;
+        try {
+            song = new Media(getClass().getClassLoader().getResource(path).toURI().toString());
+        } catch (URISyntaxException e) {
+            e.printStackTrace();
+        }
+        sound = new MediaPlayer(song); 
     }
 
     public void play(){
@@ -18,6 +24,13 @@ public class MusicPlayer{
 
     public void loop(){
         sound.play();
+        sound.setOnEndOfMedia(new Runnable() {
+            @Override
+            public void run() {
+                sound.seek(Duration.ZERO);
+                sound.play();
+            }
+        }); 
     }
 
     public void stop(){

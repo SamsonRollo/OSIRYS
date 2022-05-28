@@ -22,8 +22,8 @@ import javax.swing.JLabel;
 import gen.GameButton;
 import gen.InternalStateSave;
 import gen.MenuPanel;
+import gen.MusicType;
 import gen.Score;
-
 import main.MainClass;
 import main.OsirysGame;
 import main.Screen;
@@ -49,7 +49,10 @@ public class AYAOG extends OsirysGame implements MouseListener{
        loadGenerator();
        qManager = new QuestionManager(getAYAOG(), getGenerator());
        loadISS();
+       loadSoundManager();
+       loadSounds();
        updateUI();
+        sManager.loopBG();
     }
 
     public void loadElements(){
@@ -154,6 +157,7 @@ public class AYAOG extends OsirysGame implements MouseListener{
         exitBtn.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 if(btnClickCtr>=1){
+                    sManager.stop(MusicType.BG);
                     score.resetCurrentBonusScore();
                     score.resetCurrentGameScore();
                     getMainClass().showScreen(Screen.MENU.name());
@@ -174,6 +178,10 @@ public class AYAOG extends OsirysGame implements MouseListener{
         CategoryPanel cp = new CategoryPanel(this);
         add(cp);
         setComponentZOrder(cp, 0);
+    }
+
+    private void loadSounds(){
+        sManager.addMusic("ayaog", MusicType.BG);
     }
 
     public void lockAnswer(){

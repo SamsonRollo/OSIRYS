@@ -7,9 +7,11 @@ import javax.swing.JFrame;
 import javax.swing.JPanel;
 
 import gen.ImageLoader;
+import javafx.embed.swing.JFXPanel;
 
 public class MainClass extends JFrame{
-    private String ICON_PATH = "src/img/icon.ico";
+    final JFXPanel fxPanel = new JFXPanel();//for sounds
+    private String ICON_PATH = "src/img/icon.png";
     private final int SUGGESTED_W = 700;
     private final int SUGGESTED_H = 500;
     private JPanel mainPanel;

@@ -1,6 +1,7 @@
 package ayaog.game;
 
 import gen.GameMenuPanel;
+import gen.MusicType;
 import main.Screen;
 
 public class ComeBack extends GameMenuPanel{
@@ -22,6 +23,7 @@ public class ComeBack extends GameMenuPanel{
                 }catch(Exception e){};
 
                 ayaog.remove(getPanel());
+                ayaog.getSoundManager().stop(MusicType.BG);
                 ayaog.getMainClass().showScreen(Screen.MENU.name());
             }
         });

@@ -17,6 +17,7 @@ import exception.ErrorReport;
 import gen.GameButton;
 import gen.GameMenuPanel;
 import gen.ImageLoader;
+import gen.MusicType;
 import gen.Score;
 import gen.SpriteSheet;
 
@@ -57,6 +58,15 @@ public class AOP extends OsirysGame{
             new ErrorReport(getMainClass(), 
                 "Excel was not imported. No bonus for you.",
                 "No Bonus");
+        loadSoundManager();
+        loadSounds();
+        sManager.loopBG();
+    }
+
+    private void loadSounds(){
+        sManager.addMusic("aop", MusicType.BG);
+        sManager.addMusic("aop", MusicType.GAMEOVER);
+        sManager.addMusic("aop", MusicType.POWERUP);
     }
 
     public void loadElements(){

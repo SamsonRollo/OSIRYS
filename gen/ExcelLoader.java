@@ -2,6 +2,7 @@ package gen;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.InputStream;
 import java.util.Iterator;
 
 import org.apache.poi.ss.usermodel.Cell;
@@ -30,9 +31,12 @@ public class ExcelLoader{
     public void loadExcel() throws CannotImportExcelException{
 
         try {
-            if(file==null)
-                file = new File(this.getClass().getClassLoader().getResource(fileName).toURI());
-            XSSFWorkbook workbook = new XSSFWorkbook(file);
+            XSSFWorkbook workbook;
+            if(file==null){
+                InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);
+                workbook = new XSSFWorkbook(is);
+            }else
+                workbook = new XSSFWorkbook(file);
             XSSFSheet sheet = workbook.getSheetAt(0);
             retrieveData(sheet);
             workbook.close();
