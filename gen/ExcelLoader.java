@@ -2,6 +2,7 @@ package gen;
 
 import java.util.ArrayList;
 import java.io.File;
+import java.io.FileInputStream;
 import java.io.InputStream;
 import java.util.Iterator;
 
@@ -29,24 +30,29 @@ public class ExcelLoader{
     }
 
     public void loadExcel() throws CannotImportExcelException{
-
+        
         try {
             XSSFWorkbook workbook;
             if(file==null){
                 InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);
-                workbook = new XSSFWorkbook(is);
-            }else
-                workbook = new XSSFWorkbook(file);
+                workbook =  new XSSFWorkbook(is);
+            }else{
+                FileInputStream fis = new FileInputStream(file);
+                workbook = new XSSFWorkbook(fis);
+            }
+
             XSSFSheet sheet = workbook.getSheetAt(0);
             retrieveData(sheet);
             workbook.close();
         } catch (Exception e) {
+            e.printStackTrace();
             throw new CannotImportExcelException(e.getMessage());
         }
     }
 
     private void retrieveData(XSSFSheet sheet){
         DataFormatter dataFormatter = new DataFormatter();
+        questions = new ArrayList<>();
 
         Iterator<Row> rowIter = sheet.iterator();
         

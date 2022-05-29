@@ -9,21 +9,31 @@ public class QuestionGenerator {
     private ArrayList<Question> questions;
     private boolean secondChance = true;
     private int numTaken = 0;
+    private int retrieveCtr = 0;
 
     public QuestionGenerator(ArrayList<Question> questions){
         this.questions = questions;
     }
 
-    public Question generate(){
+    public Question generate() throws CategoryException{
         Question q= new Question();
+        retrieveCtr = 0;
+
         if(numTaken==questions.size()){
             for(Question ques : questions)
                 ques.setTaken(false);
             numTaken = 0;
         }
         do{
+            if(retrieveCtr>=questions.size())
+                break;
             q =  questions.get(new Random().nextInt(questions.size()));
+            retrieveCtr++;
         }while(q.isTaken() || q.getAnswer()=="" || q.getQuestion()=="");
+        
+        if(retrieveCtr>=questions.size())
+            throw new CategoryException("No questions available at the moment.");
+
         q.setTaken(true);
         numTaken++;
         return q;

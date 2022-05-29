@@ -3,7 +3,6 @@ package main;
 import javax.swing.JPanel;
 
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.awt.Dimension;
 import java.awt.Graphics;
 
@@ -15,33 +14,21 @@ import gen.Score;
 import gen.SoundManager;
 
 public abstract class OsirysGame extends JPanel{
-    private String excelPath = "src/file/questions.xlsx";
     protected String code;
     protected Score score;
     protected MainClass mainClass;
     protected BufferedImage BG_IMG;
     protected QuestionGenerator generator;
     protected boolean hasFloater = false;
-    protected File excelFile = null;
     protected SoundManager sManager;
+    protected boolean hasAlreadyWarn = false;
 
     public String getCode(){
         return this.code;
     }
 
-    protected void loadGenerator(){
-        ExcelLoader el;
-        if(excelFile!=null)
-            el = new ExcelLoader(excelFile);    
-
-        el = new ExcelLoader(getExcelPath());
-
-        try{
-            el.loadExcel();
-        }catch(Exception e){
-            new exception.ErrorReport(getMainClass(), e.getMessage(), "Import Error");
-        }
-        generator = new QuestionGenerator(el.getQuestions());
+    protected void loadGenerator(ExcelLoader loader){
+        generator = new QuestionGenerator(loader.getQuestions());
     }
 
     protected void loadSoundManager(){
@@ -64,12 +51,16 @@ public abstract class OsirysGame extends JPanel{
         this.code = code;
     }
 
-    protected String getExcelPath(){
-        return this.excelPath;
-    }
-
     public Score getScore(){
         return this.score;
+    }
+
+    public void setWarn(boolean warn){
+        this.hasAlreadyWarn = warn;
+    }
+
+    public boolean hasAlreadyWarn(){
+        return this.hasAlreadyWarn;
     }
 
     public QuestionGenerator getGenerator(){
@@ -111,6 +102,6 @@ public abstract class OsirysGame extends JPanel{
         g.drawImage(BG_IMG,0,0,null);
     }
 
-    abstract protected void loadGame();
+    abstract protected void loadGame(ExcelLoader loader);
     public abstract void revertChanges(boolean status);
 }

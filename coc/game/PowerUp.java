@@ -49,11 +49,11 @@ public class PowerUp extends GameObject implements Runnable{
     }
 
     public void executePowerUp(int selectedPowerUp){
-        if(!coc.getGenerator().isQuestionsNull()){
-            boolean playBol = coc.isPlay();
-            coc.setPlay(false);
-            QuestionPanel qp = new QuestionPanel(coc, null, playBol);
-            coc.addFloater(qp);
+        if(!coc.getGenerator().isQuestionsNull() && !coc.hasAlreadyWarn()){
+                boolean playBol = coc.isPlay();
+                coc.setPlay(false);
+                QuestionPanel qp = new QuestionPanel(coc, null, playBol);
+                coc.addFloater(qp);
         }
         if(selectedPowerUp%11==0){
             coc.getDen().killAllBugs();

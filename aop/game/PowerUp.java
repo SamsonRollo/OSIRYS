@@ -30,7 +30,7 @@ public class PowerUp extends GameObject{
     }
 
     public void executePowerUp(int selectedPowerUp){
-        if(!aop.getGenerator().isQuestionsNull()){
+        if(!aop.getGenerator().isQuestionsNull() && !aop.hasAlreadyWarn()){
             boolean playBol = aop.isPlay();
             aop.setPlay(false);
             QuestionPanel qp = new QuestionPanel(null, aop, playBol);

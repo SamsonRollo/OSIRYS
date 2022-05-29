@@ -14,9 +14,9 @@ import java.awt.event.ActionEvent;
 import java.awt.event.KeyEvent;
 import java.awt.Color;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.awt.Font;
 
+import gen.ExcelLoader;
 import gen.GameButton;
 import gen.ImageLoader;
 import gen.MusicType;
@@ -42,17 +42,17 @@ public class COC extends OsirysGame{
     public Middler middler = null;
     public PausePanel pausePanel;
 
-    public COC(MainClass mainClass, Score score, File excelFile){
-        this.excelFile = excelFile;
+    public COC(MainClass mainClass, Score score){
         this.mainClass = mainClass;
         this.score = score;
         setCode("coc");
         setProperties();
     }
 
-    protected void loadGame(){
+    @Override
+    protected void loadGame(ExcelLoader loader){
         loadElements();
-        loadGenerator();
+        loadGenerator(loader);
         if(generator.isQuestionsNull())
             new ErrorReport(getMainClass(), 
                 "Excel was not imported. No bonus for you.",

@@ -22,9 +22,10 @@ public class QuitPanel extends GameMenuPanel {
         
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                coc.getScore().incrementTotalScore(coc.getScore().getGameScore());
+                coc.getScore().incrementTotalScore(coc.getScore().getGameScore()+coc.getScore().getBonusScore());
                 coc.getScore().resetCurrentGameScore();
                 coc.getScore().resetCurrentLevelScore();
+                coc.getScore().resetCurrentBonusScore();
                 coc.getSoundManager().stopAll();
                 coc.getMainClass().showScreen(Screen.MENU.name());
             }

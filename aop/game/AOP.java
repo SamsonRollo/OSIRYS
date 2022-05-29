@@ -8,12 +8,12 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.image.BufferedImage;
-import java.io.File;
 import java.util.ArrayList;
 import java.util.Iterator;
 import java.util.Random;
 
 import exception.ErrorReport;
+import gen.ExcelLoader;
 import gen.GameButton;
 import gen.GameMenuPanel;
 import gen.ImageLoader;
@@ -43,17 +43,16 @@ public class AOP extends OsirysGame{
     private Font font;
     private PowerUp powUp = null;
 
-    public AOP(MainClass mainClass, Score score, File excelFile){
-        this.excelFile = excelFile;
+    public AOP(MainClass mainClass, Score score){
         this.mainClass = mainClass;
         this.score = score;
         setCode("aop");
         setProperties();
     }
 
-    public void loadGame(){
+    public void loadGame(ExcelLoader loader){
         loadElements();
-        loadGenerator();
+        loadGenerator(loader);
         if(generator.isQuestionsNull())
             new ErrorReport(getMainClass(), 
                 "Excel was not imported. No bonus for you.",

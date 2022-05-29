@@ -58,7 +58,7 @@ public class SettingPanel extends MenuPanel {
 
                 if(jf.showOpenDialog(osirys.getMainClass())==JFileChooser.APPROVE_OPTION){
                     if(jf.getSelectedFile().exists())
-                        osirys.setExcelFile(jf.getSelectedFile());
+                        osirys.setLoader(jf.getSelectedFile());
                     else
                         new ErrorReport(osirys.getMainClass(), "Cannot import file", "Import error");
                 }

@@ -7,7 +7,6 @@ import java.awt.Graphics;
 import java.awt.event.ActionListener;
 import java.awt.event.ActionEvent;
 import java.awt.event.MouseListener;
-import java.io.File;
 import java.awt.event.MouseEvent;
 import java.util.ArrayList;
 import java.util.Enumeration;
@@ -19,6 +18,7 @@ import javax.swing.ButtonGroup;
 import javax.swing.ImageIcon;
 import javax.swing.JLabel;
 
+import gen.ExcelLoader;
 import gen.GameButton;
 import gen.InternalStateSave;
 import gen.MenuPanel;
@@ -35,8 +35,7 @@ public class AYAOG extends OsirysGame implements MouseListener{
     private Level level;
     private InternalStateSave iss;
 
-    public AYAOG(MainClass mainClass, Score score, InternalStateSave iss, File excelFile){
-        this.excelFile = excelFile;
+    public AYAOG(MainClass mainClass, Score score, InternalStateSave iss){
         this.mainClass = mainClass;
         this.iss = iss;
         this.score = score;
@@ -44,9 +43,9 @@ public class AYAOG extends OsirysGame implements MouseListener{
         setProperties();
     }
 
-    public void loadGame(){
+    public void loadGame(ExcelLoader loader){
        loadElements();
-       loadGenerator();
+       loadGenerator(loader);
        qManager = new QuestionManager(getAYAOG(), getGenerator());
        loadISS();
        loadSoundManager();

@@ -4,6 +4,8 @@ import javax.swing.JLabel;
 
 import aop.game.AOP;
 import coc.game.COC;
+import exception.CategoryException;
+import exception.ErrorReport;
 
 import java.awt.event.MouseListener;
 import java.awt.Font;
@@ -22,9 +24,19 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
             game = coc;
         else
             game = aop;
-        
-        game.getSoundManager().play(MusicType.POWERUP);
         this.isPlay = playBol;
+        game.getSoundManager().play(MusicType.POWERUP);
+
+        try {
+            qObj = game.getGenerator().generate();
+        } catch (CategoryException e) {
+            game.setWarn(true);
+            new ErrorReport(game.getMainClass(), e.getMessage(), "Unable to retrieve questions");
+            clickFunction();
+            return;
+        }
+
+        
         this.path = "src/img/powerupquestion.png";
         this.srcPath = "";
         loadElements(game.getCode()+"question");
@@ -33,7 +45,6 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
             BG.getWidth(),
             BG.getHeight()
         );
-        qObj = game.getGenerator().generate();
 
         JLabel question = new JLabel("<html>"+qObj.getQuestion()+"</html>");
         question.setBounds(55,85, 580, 180 );
@@ -80,10 +91,7 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
 
             CheckPanel cp;
             game.remove(getPanel());
-            if(coc!=null)
-                coc.revertChanges(isPlay); ///watch this
-            else
-                aop.revertChanges(isPlay);
+            clickFunction();
 
             if(checkAnswer(text, qObj)){
                 cp = new CheckPanel(game, true);
@@ -95,6 +103,13 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
             game.setComponentZOrder(cp, 0);
             game.updateUI();
         }
+    }
+
+    public void clickFunction(){
+        if(coc!=null)
+            coc.revertChanges(isPlay); ///watch this
+        else
+            aop.revertChanges(isPlay);
     }
 
     @Override

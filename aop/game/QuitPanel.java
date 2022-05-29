@@ -33,9 +33,10 @@ public class QuitPanel extends GameMenuPanel {
 
         yes.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
-                aop.getScore().incrementTotalScore(aop.getScore().getGameScore());
+                aop.getScore().incrementTotalScore(aop.getScore().getGameScore()+aop.getScore().getBonusScore());
                 aop.getScore().resetCurrentGameScore();
                 aop.getScore().resetCurrentLevelScore();
+                aop.getScore().resetCurrentBonusScore();
                 aop.getSoundManager().stopAll();
                 aop.getMainClass().showScreen(Screen.MENU.name());
             }
