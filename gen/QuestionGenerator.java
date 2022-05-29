@@ -33,7 +33,8 @@ public class QuestionGenerator {
         
         if(retrieveCtr>=questions.size())
             throw new CategoryException("No questions available at the moment.");
-
+            
+        q.updateChoices(rearrangeChoices(q.getChoices()));
         q.setTaken(true);
         numTaken++;
         return q;

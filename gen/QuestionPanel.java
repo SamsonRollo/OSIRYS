@@ -91,7 +91,6 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
 
             CheckPanel cp;
             game.remove(getPanel());
-            clickFunction();
 
             if(checkAnswer(text, qObj)){
                 cp = new CheckPanel(game, true);
@@ -99,6 +98,7 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
             }else{
                 cp = new CheckPanel(game, false);
             }
+            clickFunction();
             game.add(cp);
             game.setComponentZOrder(cp, 0);
             game.updateUI();
@@ -108,8 +108,9 @@ public class QuestionPanel extends GameMenuPanel implements MouseListener{
     public void clickFunction(){
         if(coc!=null)
             coc.revertChanges(isPlay); ///watch this
-        else
+        else{
             aop.revertChanges(isPlay);
+        }
     }
 
     @Override

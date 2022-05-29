@@ -65,7 +65,6 @@ public class AOP extends OsirysGame{
     private void loadSounds(){
         sManager.addMusic("aop", MusicType.BG);
         sManager.addMusic("aop", MusicType.GAMEOVER);
-        sManager.addMusic("aop",MusicType.BULLET);
         sManager.addMusic("aop", MusicType.POWERUP);
     }
 
@@ -112,6 +111,10 @@ public class AOP extends OsirysGame{
         playBut.addActionListener(new ActionListener(){
             public void actionPerformed(ActionEvent e){
                 loadInitImage();
+                if(!isNewGame()){
+                    setNewGame(false);
+                    sManager.play(MusicType.ANY);
+                }
                 playingStatus(true);
             }
         });
@@ -255,11 +258,8 @@ public class AOP extends OsirysGame{
     }
 
     public void setAllProcessDead(){
-        for(Process p : processes){
-            if(processLane[p.getLane()]>0)
-                processLane[p.getLane()]--;
+        for(Process p : processes)
             p.setAlive(false);
-        }
     }
 
     public void removeProcessor(){
@@ -345,15 +345,22 @@ public class AOP extends OsirysGame{
     }
 
     public void setGameOver(){
-        setPlay(false);
-        GameOverPanel goPanel = new GameOverPanel(getAOP(), score, font);
-        addFloater(goPanel);
+        if(!hasOverNotify()){
+            setOverNotify(true);
+            setPlay(false);
+            GameOverPanel goPanel = new GameOverPanel(getAOP(), score, font);
+            addFloater(goPanel);
+        }
     }
 
     public void revertChanges(boolean status){
         if(status)
             playingStatus(true);
         setAllBtnEnabled(true);
+    }
+
+    public void resetProcessLane(){
+        this.processLane = new int[7];
     }
 
     public int[] getProcessesLane(){

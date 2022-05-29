@@ -78,7 +78,7 @@ public class Upgrade {
     }
 
     public void incrementStarvation(){
-        this.starvation++;
+        this.starvation+=20;
     }
 
     public int getStarvationRealCount(){

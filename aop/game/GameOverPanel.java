@@ -33,6 +33,7 @@ public class GameOverPanel extends GameMenuPanel {
                 aop.remove(getPanel());
                 aop.resetGame();
                 aop.setAllBtnEnabled(true);
+                aop.setOverNotify(false);
                 aop.updateUI();
             }
         });

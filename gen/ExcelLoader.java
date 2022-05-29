@@ -30,9 +30,8 @@ public class ExcelLoader{
     }
 
     public void loadExcel() throws CannotImportExcelException{
-        
+        XSSFWorkbook workbook = null;
         try {
-            XSSFWorkbook workbook;
             if(file==null){
                 InputStream is = this.getClass().getClassLoader().getResourceAsStream(fileName);
                 workbook =  new XSSFWorkbook(is);
@@ -47,6 +46,10 @@ public class ExcelLoader{
         } catch (Exception e) {
             e.printStackTrace();
             throw new CannotImportExcelException(e.getMessage());
+        }finally{
+            try {
+                workbook.close();
+            } catch (Exception e) {}
         }
     }
 

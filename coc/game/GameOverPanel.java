@@ -40,7 +40,7 @@ public class GameOverPanel extends GameMenuPanel {
         g.drawImage(BG, 0, 0, null);
         g.setColor(java.awt.Color.white);
         g.setFont(font);
-        String score = String.valueOf(game.getScore().getGameScore());
+        String score = String.valueOf(game.getScore().getGameScore()+game.getScore().getBonusScore());
         int scoreW = g.getFontMetrics().stringWidth(score);
         g.drawString(score, 
             (int)Math.floor(Double.valueOf(getWidth())/2-Double.valueOf(scoreW)/2),

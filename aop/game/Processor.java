@@ -8,8 +8,6 @@ import java.awt.Rectangle;
 import java.util.ArrayList;
 import java.util.Iterator;
 
-import gen.MusicType;
-
 public class Processor extends GameObject{
     private boolean dragged = false;
     private ArrayList<Bullet> bullets;
@@ -99,7 +97,6 @@ public class Processor extends GameObject{
 
     public void createBullet(){
             if(!intersectBullet(getY()-3) && !isDragged()){
-                aop.getSoundManager().play(MusicType.BULLET);
                 Bullet b = new Bullet(upgrade.getBulletLevel(), 198, getY()+18); 
                 bullets.add(b);
                 aop.add(b);

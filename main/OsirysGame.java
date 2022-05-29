@@ -22,6 +22,8 @@ public abstract class OsirysGame extends JPanel{
     protected boolean hasFloater = false;
     protected SoundManager sManager;
     protected boolean hasAlreadyWarn = false;
+    protected boolean hasOverNotify = false;
+    protected boolean newGame = true;
 
     public String getCode(){
         return this.code;
@@ -61,6 +63,22 @@ public abstract class OsirysGame extends JPanel{
 
     public boolean hasAlreadyWarn(){
         return this.hasAlreadyWarn;
+    }
+
+    public boolean hasOverNotify(){
+        return this.hasOverNotify;
+    }
+
+    public void setOverNotify(boolean stat){
+        this.hasOverNotify = stat;
+    }
+
+    public boolean isNewGame(){
+        return this.newGame;
+    }
+
+    public void setNewGame(boolean stat){
+        this.newGame = stat;
     }
 
     public QuestionGenerator getGenerator(){
